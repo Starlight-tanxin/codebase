@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tx.dao.AdminMapper">
+    <resultMap id="BaseResultMap" type="com.tx.pojo.entity.Admin">
+        <result column="admin_id" jdbcType="INTEGER" property="adminId"/>
+        <result column="account" jdbcType="VARCHAR" property="account"/>
+        <result column="role" jdbcType="VARCHAR" property="role"/>
+    </resultMap>
+</mapper>
