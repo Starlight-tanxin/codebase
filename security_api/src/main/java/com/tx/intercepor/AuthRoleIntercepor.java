@@ -47,7 +47,7 @@ public class AuthRoleIntercepor extends WebMvcConfigurationSupport {
                 }
                 HandlerMethod hm = (HandlerMethod) handler;
                 AuthRole auth = hm.getMethodAnnotation(AuthRole.class);
-                if(auth.role().equals(RoleType.OPEN)){
+                if(auth == null || auth.role().equals(RoleType.OPEN)){
                     return true;
                 }
 
