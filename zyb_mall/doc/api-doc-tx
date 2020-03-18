@@ -1,0 +1,33 @@
+接口简单说明 - 谭鑫
+
+----商品相关
+/zyb/goods/searchGoods 搜索商品 （商城的各种商品的搜索操作均使用本接口）
+/zyb/goods/{goodsId}/detail 商品详情 （通过id获取商品详情）
+/zyb/goods//{goodsId}/evaluates 无用接口 （商品下面的评论直接通过查询订单的评论）
+
+----购物车操作
+/zyb/cart/index 初始化购物车（加载用户购物车列表）
+/zyb/cart/addCart 添加商品到购物车
+/zyb/cart/removeCart 删除购物车商品
+/zyb/cart/updateCart 更新购物车商品 （购物车单个商品的数量操作）
+
+----商城
+/zyb/shop/index 商城初始化
+商城初始化说明： 返回结果里面 bannerList 是商城首页的轮播图  点击能进入商品详情
+recommendGoods 是推荐的商品列表 （首页固定展示用 点击进入详情）
+collectionList 是收藏的商品（同上）
+bookList 商品列表（同上）
+
+----订单
+/zyb/order/list 用户订单列表 （包含各种状态的订单）
+/zyb/order/pre 下单（创建一个商城订单）
+/zyb/order/pay 支付（统一的支付入口）
+/zyb/order/pay/detail 支付详情 （商城订单需要的支付详情页面）
+/zyb/order/evaluate/add 添加评价
+/zyb/order/selectOrderEvaluate 查询订单评价（放到商品下面）
+/zyb/order/cancelOrder 取消订单
+/zyb/order/applyRefund 申请退款
+
+----后台操作的订单
+/open/order/sendGoods 发货
+/open/order/refund 退款

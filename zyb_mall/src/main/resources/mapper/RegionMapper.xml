@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyb.mini.mall.dao.RegionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zyb.mini.mall.pojo.entity.Region">
+        <id column="id" property="id" />
+        <result column="region_no" property="regionNo" />
+        <result column="region" property="region" />
+        <result column="city_no" property="cityNo" />
+    </resultMap>
+
+    <resultMap id="ProvinceVO2Map" type="com.zyb.mini.mall.pojo.vo.city.ProvinceVO">
+        <id column="province_no" property="provinceNo"/>
+        <result column="province" property="province"/>
+        <collection property="cityList" resultMap="CityVO2Map"/>
+    </resultMap>
+    <resultMap id="CityVO2Map" type="com.zyb.mini.mall.pojo.vo.city.CityVO">
+        <id column="city_no" property="cityNo"/>
+        <result column="city" property="city"/>
+        <collection property="regionList" resultMap="RegionVO2Map"/>
+    </resultMap>
+    <resultMap id="RegionVO2Map" type="com.zyb.mini.mall.pojo.vo.city.RegionVO">
+        <id column="region_no" property="regionNo"/>
+        <result column="region" property="region"/>
+    </resultMap>
+
+    <select id="selectProvinceAndCityAndRegion" resultMap="ProvinceVO2Map">
+        SELECT
+            t1.province_no,t1.province,t2.city_no,t2.city,t3.region_no,t3.region
+        FROM
+            tb_province t1
+            INNER JOIN tb_city t2 ON t2.province_no = t1.province_no
+            INNER JOIN tb_region t3 ON t3.city_no = t2.city_no
+    </select>
+
+
+</mapper>

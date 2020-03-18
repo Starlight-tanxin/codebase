@@ -1,0 +1,15 @@
+spring:
+  thymeleaf:
+    cache: false
+    enabled: true
+    encoding: utf-8
+    mode: html
+    prefix: classpath:/templates/
+    servlet:
+      content-type: text/html
+      produce-partial-output-while-processing: true
+    suffix: .html
+    enable-spring-el-compiler: false
+    check-template-location: true
+    check-template: true
+    render-hidden-markers-before-checkboxes: false

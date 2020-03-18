@@ -1,0 +1,11 @@
+logging:
+  file: log/zyb_mall.log
+  level:
+    root: INFO
+    com:
+      zyb.mini.mall: debug
+      ibatis: debug
+    org.springframework:
+      web: DEBUG
+      jdbc: DEBUG
+    springfox.documentation.spring.web.readers.operation: warn

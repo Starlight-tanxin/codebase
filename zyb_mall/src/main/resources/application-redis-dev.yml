@@ -1,0 +1,18 @@
+spring:
+  redis:
+    lettuce:
+      pool:
+        max-active: 200 #连接池最大连接数（使用负值表示没有限制）
+        max-idle: 20 # 连接池中的最大空闲连接
+        min-idle: 5 #连接池中的最小空闲连接
+        max-wait: 2000 # 当连接池耗尽时， 抛出异常之前，连接分配被阻塞的时间，也就是连接池满后最长等待时间，负值表示无限期等待
+    redis-main:
+      host: 39.98.142.99
+      port: 63221
+      database: 5
+      password: OnlinezuozuoCreated.redis.zyb
+    redis-project-token:
+      host: ${spring.redis.redis-main.host}
+      port: ${spring.redis.redis-main.port}
+      database: 6
+      password: ${spring.redis.redis-main.password}

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>后台管理模板</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/css/bootstrap-responsive.min.css"/>
+    <link rel="stylesheet" href="/static/css/matrix-style.css"/>
+    <link rel="stylesheet" href="/static/css/matrix-media.css"/>
+    <link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet"/>
+</head>
+<body>
+<!--Header-part-->
+<div id="header">
+    <h1><a href="dashboard.html">藏一本后台管理系统</a></h1>
+</div>
+<!--close-Header-part-->
+
+<!--top-Header-menu-->
+<div id="user-nav" class="navbar navbar-inverse">
+    <ul class="nav">
+        <!--            <li class=""><a title="" href="login.html"><i class="icon icon-share-alt"></i> <span class="text">&nbsp;退出系统</span></a></li>-->
+    </ul>
+</div>
+<!--close-top-Header-menu-->
+
+<!--sidebar-menu-->
+<div id="sidebar" style="OVERFLOW-Y: auto; OVERFLOW-X:hidden;">
+    <ul>
+
+        <li class="submenu">
+            <a href="#">
+                <i class="icon icon-table"></i>
+                <span>图书管理</span>
+                <span class="label label-important">2</span>
+            </a>
+            <ul>
+                <li><a class="menu_a" link=/template/mng/book><i class="icon icon-caret-right"></i>图书列表</a></li>
+                <li><a class="menu_a" link="/template/mng/book/add"><i class="icon icon-caret-right"></i>新增图书</a></li>
+            </ul>
+        </li>
+
+
+        <li class="submenu">
+            <a href="#">
+                <i class="icon icon-table"></i>
+                <span>消息管理</span>
+                <span class="label label-important">1</span>
+            </a>
+            <ul>
+                <li><a class="menu_a" link=/template/mng/msg><i class="icon icon-caret-right"></i>消息列表</a></li>
+            </ul>
+        </li>
+
+        <li class="submenu">
+            <a href="#">
+                <i class="icon icon-th"></i>
+                <span>商品订单管理</span>
+                <span class="label label-important">5</span>
+            </a>
+            <ul>
+                <li><a class="menu_a" link="/template/mng/order/all"><i class="icon icon-caret-right"></i>全部订单</a></li>
+                <li><a class="menu_a" link="/template/mng/order/unshipped"><i
+                        class="icon icon-caret-right"></i>未发货订单</a></li>
+                <li><a class="menu_a" link="/template/mng/order/shipped"><i class="icon icon-caret-right"></i>已发货订单</a>
+                </li>
+                <li><a class="menu_a" link="/template/mng/order/complate"><i class="icon icon-caret-right"></i>已完成订单</a>
+                </li>
+                <li><a class="menu_a" link="/template/mng/order/refund"><i
+                        class="icon icon-caret-right"></i>退款/退货中订单</a></li>
+
+            </ul>
+        </li>
+
+        <li class="submenu">
+            <a href="#">
+                <i class="icon icon-table"></i>
+                <span>修复订单管理</span>
+                <span class="label label-important">1</span>
+            </a>
+            <ul>
+                <li><a class="menu_a" link=/template/mng/repair><i class="icon icon-caret-right"></i>修复订单列表</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<!--sidebar-menu-->
+
+<!--main-container-part-->
+<div id="content">
+    <!--breadcrumbs-->
+    <div id="content-header">
+        <div id="breadcrumb"><a href="/template/index" title="Go to Home" class="tip-bottom"><i
+                class="icon-home"></i> 首页</a></div>
+    </div>
+    <!--End-breadcrumbs-->
+    <iframe src="/template/mng/book" id="iframe-main" frameborder='0' style="width:100%;"></iframe>
+</div>
+<!--end-main-container-part-->
+
+<script src="/static/js/excanvas.min.js"></script>
+<script src='https://libs.baidu.com/jquery/1.7.1/jquery.min.js'></script>
+<script src="/static/js/jquery.ui.custom.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/nicescroll/jquery.nicescroll.min.js"></script>
+<script src="/static/js/matrix.js"></script>
+
+
+<script type="text/javascript">
+
+    //初始化相关元素高度
+    function init() {
+        $("body").height($(window).height() - 80);
+        $("#iframe-main").height($(window).height() - 90);
+        $("#sidebar").height($(window).height() - 50);
+    }
+
+    $(function () {
+        init();
+        $(window).resize(function () {
+            init();
+        });
+    });
+
+    // This function is called from the pop-up menus to transfer to
+    // a different page. Ignore if the value returned is a null string:
+    function goPage(newURL) {
+        // if url is empty, skip the menu dividers and reset the menu selection to default
+        if (newURL != "") {
+            // if url is "-", it is this page -- reset the menu:
+            if (newURL == "-") {
+                resetMenu();
+            }
+            // else, send page to designated URL            
+            else {
+                document.location.href = newURL;
+            }
+        }
+    }
+
+    // resets the menu selection upon entry to this page:
+    function resetMenu() {
+        document.gomenu.selector.selectedIndex = 2;
+    }
+
+    // uniform使用示例：
+    // $.uniform.update($(this).attr("checked", true));
+</script>
+</body>
+</html>

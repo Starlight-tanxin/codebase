@@ -1,0 +1,76 @@
+
+
+
+
+
+接口简单说明 - 谭鑫的朋友
+
+
+----鉴赏
+/zyb/identify/index 鉴赏初始化
+鉴赏初始化说明：
+参数：isReplay ：是否有专家回复 false 不做判断, true  有， 结果集里专家回复不能为空
+
+/zyb/identify/getInfo 鉴赏记录详情
+鉴赏记录详情说明：
+
+
+/zyb/identify/add 鉴赏记录添加
+鉴赏记录添加：添加的时候 填完基本信息不需要提交 保存在本地 等选择专家后 再提交
+
+
+
+/zyb/identify/update 鉴赏记录修改
+鉴赏记录修改：用户暂时用不到，可以给专家回复用 专家回复时不需要传（identifyImgs）图片参数即可
+
+
+
+----修复
+/zyb/maintain/index 修复初始化
+修复初始化说明：
+参数：maintainState ：
+                修复状态
+                 1 - 创建修复订单(等待官方回复)
+                 2 - 官方回复完成
+                 3 - 支付收款（修复中）
+                 4 - 修复完成
+       备注： 不传就是查所有状态
+  在添加修复订单的那块有个显示回复的列表 可以用这个接口 参数传2
+
+/zyb/maintain/getInfo 修复详情
+修复详情说明：
+
+
+/zyb/maintain/add 修复添加
+修复添加：添加的时候 填完基本信息不需要提交 保存在本地 等选择专家后 再提交
+
+
+/zyb/eva/add   修复，鉴赏共用的评价
+说明 用businessType区分 业务类型 false  修复， true 鉴赏
+
+
+
+/zyb/maintainMsg/add  修复订单回复消息
+说明：isFixed
+          是不是预修复回复
+         true - 是预修复回复
+         false - 不是预修复回复
+
+
+
+
+/zyb/userPro/index  鉴赏专家初始化
+鉴赏选择专家时调用
+
+
+
+/zyb/userPro/getInfo  鉴赏专家详情
+
+
+
+/zyb/maintain-pro/index  修复专家初始化
+鉴赏选择专家时调用
+
+
+
+/zyb/maintain-pro/getInfo   修复专家详情

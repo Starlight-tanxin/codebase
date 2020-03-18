@@ -1,0 +1,122 @@
+
+
+
+
+
+打卡部分
+
+接口
+/zyb/surname/search  # 搜索页面初始化
+
+/zyb/surname/search/{keyword} # 搜索姓氏
+
+/zyb/surname/{surnameId}/detail # 姓氏详情
+
+/zyb/surname/{surnameId}/help # 助力打卡
+
+/zyb/surname/top # 百家姓排行
+
+/zyb/surname/{surnameId}/top # 某姓打卡详情
+
+
+修复部分
+
+/zyb/repair # 页面初始化
+
+/zyb/repair/add # 新增修复
+
+/zyb/repair/apply/list # 查看全部的修复申请列表
+
+/zyb/repair/{userId}/list # 获取某个用户的修复记录
+
+/zyb/repair/{repairId}/detail # 修复详情
+
+/zyb/repair/{repairId}/arrive-time # 填入到达时间
+
+/zyb/appreciate/add # 新增鉴赏
+
+/zyb/appreciate/{appreciateId}/return # 退回鉴赏
+
+/zyb/appreciate/{appreciateId}/detail # 某个鉴赏记录详情
+
+/zyb/appreciate/{appreciateId}/{expertId}/reply # 专家回复某个鉴赏
+
+/zyb/expert/list # 专家列表
+
+/zyb/expert/{expertId}/detail # 专家详情
+
+/zyb/expert/{expertId}/record # 专家的鉴赏记录列表
+
+订单部分
+/zyb/order/list # 订单列表
+
+/zyb/order/pre # 下单
+
+/zyb/order/pay # 支付
+
+/zyb/order/pay/detail # 支付详情页面
+
+/zyb/order/pay/callback # 支付回调
+
+/zyb/order/evaluate/add # 发布评价
+
+商城部分
+
+/zyb/shop # 商城初始化
+
+/zyb/goods/{goodsId}/detail # 商品详情
+
+/zyb/goods/{goodsId}/evaluates # 某个商品的评价列表
+
+/zyb/goods/ # 全部书籍初始化
+
+/zyb/goods/filter # 书籍过滤
+
+/zyb/msg/list # 消息列表
+
+/zyb/collect # 官方收藏初始化
+
+/zyb/collect/add # 添加官方收藏
+
+/zyb/collect/list # 官方收藏列表
+
+/zyb/collect/search/{keyword} # 搜索官方收藏
+
+/zyb/goods/search/{keyword} # 搜索商品
+
+/zyb/cart # 购物车初始化
+
+
+个人中心部分
+
+/zyb/mine # 个人中心初始化
+
+/zyb/mine/userinfo # 获取用户信息
+
+/zyb/receive-address/add # 新增收货地址
+
+
+
+
+认证部分
+
+/zyb/auth/expert/add # 申请专家认证
+
+/zyb/auth/expert/list # 申请的专家列表
+
+/zyb/auth/expert/{expertId}/examine # 审核某个专家
+
+/zyb/auth/expert/{expertId}/check # 查询专家认证状态
+
+
+账户部分
+
+/zyb/cash-out/add # 发起提现
+
+/zyb/account # 账户明细
+
+
+
+
+
+

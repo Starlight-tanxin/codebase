@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyb.mini.mall.dao.UserProMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zyb.mini.mall.pojo.entity.UserPro">
+        <id column="id" property="id" />
+        <result column="antique_type_id" property="proTypeId" />
+        <result column="user_id" property="userId" />
+        <result column="mobile" property="mobile" />
+        <result column="realname" property="realname" />
+        <result column="id_card" property="idCard" />
+        <result column="rec_realname" property="recRealname" />
+        <result column="rec_mobile" property="recMobile" />
+        <result column="pro_detail" property="proDetail" />
+        <result column="pro_img" property="proImg" />
+        <result column="price" property="price" />
+        <result column="user_pro_priority" property="userProPriority" />
+        <result column="created_time" property="createdTime" />
+    </resultMap>
+    <select id="selectPageByParam" resultType="com.zyb.mini.mall.pojo.entity.UserPro">
+      SELECT
+        t.*,
+	    ty.type_name AS typeName
+      FROM
+	    tb_user_pro t
+	  LEFT JOIN tb_antique_type ty ON ty.id = t.pro_type_id
+      WHERE 1=1
+      <if test="param.antiqueTypeId != null">
+         AND t.pro_type_id = #{param.antiqueTypeId}
+      </if>
+      ORDER BY
+        t.user_pro_priority DESC
+    </select>
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyb.mini.mall.dao.ShopOrderEvaluateMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zyb.mini.mall.pojo.entity.ShopOrderEvaluate">
+        <id column="id" property="id" />
+        <result column="shop_order_id" property="shopOrderId" />
+        <result column="user_id" property="userId" />
+        <result column="eav_msg" property="eavMsg" />
+        <result column="eav_type" property="eavType" />
+        <result column="eva_img_1" property="evaImg1" />
+        <result column="eva_img_2" property="evaImg2" />
+        <result column="created_time" property="createdTime" />
+    </resultMap>
+
+</mapper>

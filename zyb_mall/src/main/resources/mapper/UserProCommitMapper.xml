@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyb.mini.mall.dao.UserProCommitMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zyb.mini.mall.pojo.entity.UserProCommit">
+        <id column="id" property="id" />
+        <result column="mobile" property="mobile" />
+        <result column="realname" property="realname" />
+        <result column="id_card" property="idCard" />
+        <result column="rec_realname" property="recRealname" />
+        <result column="rec_mobile" property="recMobile" />
+        <result column="pro_detail" property="proDetail" />
+        <result column="pro_img" property="proImg" />
+        <result column="antique_type_id" property="antiqueTypeId" />
+        <result column="user_id" property="userId" />
+        <result column="state" property="state" />
+        <result column="cretaed_time" property="cretaedTime" />
+    </resultMap>
+
+</mapper>

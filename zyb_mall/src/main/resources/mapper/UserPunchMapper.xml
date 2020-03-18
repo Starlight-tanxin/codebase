@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyb.mini.mall.dao.UserPunchMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zyb.mini.mall.pojo.entity.UserPunch">
+        <id column="id" property="id"/>
+        <result column="surname_id" property="surnameId"/>
+        <result column="user_id" property="userId"/>
+        <result column="punch_count" property="punchCount"/>
+        <result column="punch_date" property="punchDate"/>
+    </resultMap>
+
+
+    <select id="top" resultType="com.zyb.mini.mall.pojo.vo.surname.SurnameTopVo">
+
+        select s.name, ifnull(sum(t.punch_count), 0) as sum, count(t.id) as `count`
+        from tb_user_punch t
+                 left join tb_surname s on s.id = t.surname_id
+        group by t.surname_id
+    </select>
+
+
+    <select id="countPersonNumber" resultType="java.lang.Integer">
+
+
+        SELECT COUNT(*)
+        FROM (select COUNT(*)
+              from tb_user_punch s
+              where s.surname_id = #{surnameId}
+              group by s.user_id) a
+    </select>
+    <select id="earlyBirdUser" resultType="java.lang.String">
+        select tu.nickname
+        from tb_user_punch s
+                 left join tb_user tu on s.user_id = tu.id
+        where s.surname_id = #{surnameId}
+        order by s.punch_date desc
+        limit 1
+    </select>
+    <select id="topOneUser" resultType="java.lang.String">
+        select any_value(tu.nickname) nickname, ifnull(sum(s.punch_count), 0) su
+        from tb_user_punch s
+                 left join tb_user tu on s.user_id = tu.id
+        where s.surname_id = #{surnameId}
+        order by su desc
+        limit 1
+    </select>
+    <select id="list" resultType="com.zyb.mini.mall.pojo.vo.surname.SurnameDetailVo$Column">
+        select tu.nickname, ifnull(sum(s.punch_count), 0) `count`
+        from tb_user_punch s
+                 left join tb_user tu on s.user_id = tu.id
+        where s.surname_id = #{surnameId}
+        group by s.user_id
+    </select>
+    <select id="billboardOfStart" resultType="java.lang.String">
+        select any_value(t.name), any_value(ifnull(sum(s.punch_count), 0)) `count`
+        from tb_user_punch s
+                 left join tb_surname t on t.id = s.surname_id
+        where s.punch_date > #{start}
+        group by s.surname_id
+        order by `count` desc
+        limit 1
+
+    </select>
+    <select id="billboardOfStartDetail" resultType="com.zyb.mini.mall.pojo.dto.BillboardOfStartDto">
+        select any_value(s.surname_id)                  surname_id,
+               any_value(t.name)                        name,
+               any_value(ifnull(sum(s.punch_count), 0)) `count`
+        from tb_user_punch s
+                 left join tb_surname t on t.id = s.surname_id
+        where s.punch_date > #{start}
+        group by s.surname_id
+        order by `count` desc
+    </select>
+    <select id="thisSurnameTopOne" resultType="java.lang.Long">
+        select any_value(s.user_id)                     userId,
+               any_value(ifnull(sum(s.punch_count), 0)) `count`
+        from tb_user_punch s
+                 left join tb_user u on u.id = s.user_id
+        where s.surname_id = #{surnameId}
+        group by s.user_id
+        order by `count` desc
+        limit 1
+    </select>
+
+
+</mapper>

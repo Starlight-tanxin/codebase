@@ -1,0 +1,27 @@
+weixin4j:
+  #微信开发配置
+  config:
+    #开发者第三方用户唯一凭证
+    appid: wxc7f2f7a96928c55f
+    #开发者第三方用户唯一凭证密钥
+    secret: 150c2618ecd803d67c6c843ba5cff834
+    #公众号原始ID
+    originalid: gh_205cb0d70e01
+    #消息加密方式 0:明文模式(默认), 1:兼容模式, 2:安全模式(推荐)
+    encodingtype: 0
+    #消息加密密钥(43位字符组成A-Za-z0-9)
+    encodingaeskey: 0123456789abcedfghijklmnopqrstuvwxyzZXCVBNM
+    #网页安全授权URL
+    oauthUrl:
+  #微信支付配置
+  payConfig:
+    #微信支付_商户ID，例如10000000001
+    partnerId: 1558652881
+    #微信支付_商户密钥，由商户设置32位字符
+    partnerKey: lMxGOtZw90pg3nSZLi3PnfMsxu0X3RKU
+    #微信支付_通知URL，异步接收微信支付结果的URL
+    notifyUrl:
+    #证书路径(pk12格式)，例如：/opt/cert/10000000001.pk12
+    certPath:
+    #证书密钥,默认为商户ID，例如：10000000001
+    certSecret:

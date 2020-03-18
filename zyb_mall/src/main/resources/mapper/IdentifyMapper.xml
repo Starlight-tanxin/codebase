@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyb.mini.mall.dao.IdentifyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zyb.mini.mall.pojo.entity.Identify">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="antique_name" property="antiqueName"/>
+        <result column="antique_detail" property="antiqueDetail"/>
+        <result column="user_pro_id" property="userProId"/>
+        <result column="identify" property="identify"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="pro_reply_msg" property="proReplyMsg"/>
+        <result column="pro_reply_time" property="proReplyTime"/>
+        <result column="pro_year_id" property="proYearId"/>
+        <result column="pro_back_msg" property="proBackMsg"/>
+        <result column="pro_back_detail" property="proBackDetail"/>
+        <result column="amount" property="amount"/>
+        <result column="check_state" property="checkState"/>
+    </resultMap>
+    <select id="queryIdentifyOrder" resultType="com.zyb.mini.mall.pojo.entity.Identify">
+            SELECT
+            b.realname AS userProName,
+            c.nickname AS userName,
+            a.*
+            FROM
+            tb_identify a
+            LEFT JOIN tb_user_pro b ON b.id = a.user_pro_id
+            LEFT JOIN tb_user c ON a.user_id = c.id
+            WHERE
+            1=1
+            <if test="param.identify !=null">
+                AND a.identify=#{param.identify}
+            </if>
+            <if test="param.amount !=null">
+                AND a.amount=#{param.amount}
+            </if>
+    </select>
+    <select id="selectPageByParam" resultType="com.zyb.mini.mall.pojo.entity.Identify">
+        SELECT
+        b.realname AS userProName,
+        c.nickname AS userName,
+        a.*
+        FROM
+        tb_identify a
+        LEFT JOIN tb_user_pro b ON a.user_pro_id = b.id
+        LEFT JOIN tb_user c ON a.user_id = c.id
+        WHERE
+        1=1
+        AND a.identify != 1 <!-- 必须付完款 -->
+        <if test="param.userId != null">
+            AND a.user_id = #{param.userId}
+        </if>
+        <if test="param.isReplay != null">
+            AND a.pro_reply_msg IS NOT NULL
+        </if>
+        <if test="param.state != null">
+            AND a.identify = #{param.state}
+        </if>
+        <if test="param.userProId != null" >
+            AND a.user_pro_id = #{param.userProId}
+        </if>
+    </select>
+</mapper>

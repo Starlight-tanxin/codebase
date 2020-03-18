@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyb.mini.mall.dao.ShopOrderDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zyb.mini.mall.pojo.entity.ShopOrderDetail">
+        <id column="id" property="id"/>
+        <result column="num" property="num"/>
+        <result column="shop_order_id" property="shopOrderId"/>
+        <result column="goods_book_id" property="goodsBookId"/>
+        <result column="goods_price" property="goodsPrice"/>
+        <result column="goods_name" property="goodsName"/>
+        <result column="main_img" property="mainImg"/>
+        <result column="book_desc" property="bookDesc"/>
+    </resultMap>
+    <select id="LIST" resultType="com.zyb.mini.mall.pojo.vo.MngOrderDetailVo">
+        select d.num, d.goods_name name, d.main_img ,d.book_desc description,d.goods_price price
+        from tb_shop_order_detail d
+        where d.shop_order_id = #{id}
+    </select>
+    <select id="selectAllByOrderIds" resultType="com.zyb.mini.mall.pojo.entity.ShopOrderDetail">
+        SELECT * FROM tb_shop_order_detail WHERE 1=1
+        <foreach collection="list" item="item" open=" AND shop_order_id IN ( " close=" )" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyb.mini.mall.dao.MaintainMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zyb.mini.mall.pojo.entity.Maintain">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="antique_no" property="antiqueNo" />
+        <result column="antique_name" property="antiqueName" />
+        <result column="antique_type_id" property="antiqueTypeId" />
+        <result column="maintain_detail" property="maintainDetail" />
+        <result column="user_address_id" property="userAddressId" />
+        <result column="is_self_take" property="isSelfTake" />
+        <result column="maintain_pro_id" property="maintainProId" />
+        <result column="maintain_state" property="maintainState" />
+        <result column="created_time" property="createdTime" />
+        <result column="cm_maintain_amount" property="cmMaintainAmount" />
+        <result column="cm_maintain_day" property="cmMaintainDay" />
+        <result column="cm_date" property="cmDate" />
+        <result column="cm_name" property="cmName" />
+        <result column="cm_address" property="cmAddress" />
+        <result column="cm_mobile" property="cmMobile" />
+        <result column="fixed_start_time" property="fixedStartTime"/>
+        <result column="fixed_end_time" property="fixedEndTime"/>
+    </resultMap>
+    <select id="queryMaintainOrder" resultType="com.zyb.mini.mall.pojo.entity.Maintain">
+            SELECT
+            b.realname AS maintainPro,
+            c.nickname AS userName,
+            d.type_name AS antiqueType,
+            a.*
+            FROM
+            tb_maintain a
+            LEFT JOIN tb_maintain_pro b ON b.id = a.maintain_pro_id
+            LEFT JOIN tb_user c ON a.user_id = c.id
+            LEFT JOIN tb_antique_type d ON a.antique_type_id = d.id
+            WHERE
+            1=1
+        <if test="param.userId != null" >
+            AND a.user_id = #{param.userId}
+        </if>
+        <if test="param.maintainState !=null">
+            AND a.maintain_state=#{param.maintainState}
+        </if>
+        <if test="param.cmMaintainAmount !=null">
+            AND a.cm_maintain_amount=#{param.cmMaintainAmount}
+        </if>
+    </select>
+</mapper>

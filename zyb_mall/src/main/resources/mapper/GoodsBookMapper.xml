@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyb.mini.mall.dao.GoodsBookMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zyb.mini.mall.pojo.entity.GoodsBook">
+        <id column="id" property="id" />
+        <result column="main_img" property="mainImg" />
+        <result column="goods_name" property="goodsName" />
+        <result column="author" property="author" />
+        <result column="is_collection" property="isCollection" />
+        <result column="year_id" property="yearId" />
+        <result column="book_paper" property="bookPaper" />
+        <result column="book_size" property="bookSize" />
+        <result column="book_desc" property="bookDesc" />
+        <result column="book_num" property="bookNum" />
+        <result column="book_type_id" property="bookTypeId" />
+        <result column="is_up" property="isUp" />
+        <result column="created_time" property="createdTime" />
+        <result column="goods_price" property="goodsPrice" />
+        <result column="phase_type_id" property="phaseTypeId" />
+        <result column="book_other_type_id" property="bookOtherTypeId" />
+        <result column="goods_no" property="goodsNo" />
+        <result column="book_priority" property="bookPriority" />
+    </resultMap>
+    <select id="getRecommendGoods" resultType="com.zyb.mini.mall.pojo.entity.GoodsBook">
+        SELECT
+            q1.id,q1.author,q1.goods_name,q1.goods_price,q1.main_img,q1.book_desc
+        FROM
+            tb_goods_book q1
+        INNER JOIN (
+            SELECT
+                ( min( q2.id ) + round(
+                    rand() *
+                        (   CASE WHEN ( max( q2.id ) - 2 + 1 ) > min( q2.id )
+                                THEN max( q2.id ) - 2 + 1 - min( q2.id ) ELSE 0
+                            END
+                        )
+                    )
+                ) AS id,
+                min( q2.id ) AS minId,
+                max( q2.id ) AS maxId
+            FROM
+                tb_goods_book q2
+            WHERE 1=1
+                AND q2.is_up = 1 <!-- 上架 -->
+                AND q2.is_collection = 0 <!-- 不是收藏 -->
+        ) AS t ON q1.id &gt;= t.id
+        AND q1.id &gt;= t.minId
+        AND q1.id &lt;= t.maxId
+        WHERE 1=1
+            AND q1.is_up = 1 <!-- 上架 -->
+            AND q1.is_collection = 0 <!-- 不是收藏 -->
+        LIMIT #{num}
+    </select>
+
+    <select id="selectGoodsBookByParam" resultType="com.zyb.mini.mall.pojo.entity.GoodsBook">
+        SELECT
+            q1.id,q1.author,q1.goods_name,q1.goods_price,q1.main_img,q1.book_desc,q1.is_collection
+        FROM
+            tb_goods_book q1
+        WHERE 1=1
+            AND q1.is_up = 1 <!-- 上架 -->
+        <if test="param.name != null">
+            AND (
+                q1.goods_name LIKE CONCAT('%',#{param.name},'%')
+                    OR
+                q1.author LIKE CONCAT('%',#{param.name},'%')
+            )
+        </if>
+        <if test="param.bookTypeId != null">
+            AND q1.book_type_id = #{param.bookTypeId}
+        </if>
+        <if test="param.bookOtherTypeId != null">
+            AND q1.book_other_type_id = #{param.bookOtherTypeId}
+        </if>
+        <if test="param.isCollection != null">
+            AND q1.is_collection = #{param.isCollection}
+        </if>
+    </select>
+
+</mapper>

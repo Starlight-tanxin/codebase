@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyb.mini.mall.dao.ShopOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zyb.mini.mall.pojo.entity.ShopOrder">
+        <id column="id" property="id"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="order_state" property="orderState"/>
+        <result column="user_id" property="userId"/>
+        <result column="cretaed_time" property="cretaedTime"/>
+        <result column="complete_time" property="completeTime"/>
+        <result column="user_address_id" property="userAddressId"/>
+        <result column="express_price" property="expressPrice"/>
+        <result column="express_no" property="expressNo"/>
+        <result column="express_company_no" property="expressCompanyNo"/>
+        <result column="order_price" property="orderPrice"/>
+        <result column="pay_time" property="payTime" />
+        <result column="send_goods_time" property="sendGoodsTime"/>
+    </resultMap>
+    <select id="queryShopOrder" resultType="com.zyb.mini.mall.pojo.entity.ShopOrder">
+        select * from tb_shop_order a  where 1=1
+        <if test="param.orderNo !=null">
+            and a.order_no=#{param.orderNo}
+        </if>
+        <choose>
+            <when test="param.orderState != null and param.orderState != 7 and param.orderState != 0 and param.orderState != 4 and param.orderState != 5">
+                AND order_state = #{param.orderState}
+            </when>
+            <when test="param.orderState != null and param.orderState == 4">
+                AND order_state IN (4,5)
+            </when>
+            <when test="param.orderState != null and param.orderState == 7">
+                AND order_state IN (7,0)
+            </when>
+        </choose>
+    </select>
+
+    <select id="selectPageByParam" resultType="com.zyb.mini.mall.pojo.entity.ShopOrder">
+      SELECT *  FROM tb_shop_order WHERE 1 = 1 AND user_id = #{param.userId}
+        <choose>
+            <when test="param.state != null and param.state != 7 and param.state != 0">
+              AND order_state = #{param.state}
+            </when>
+            <when test="param.state != null">
+              AND order_state IN (7,0)
+            </when>
+        </choose>
+    </select>
+
+</mapper>
