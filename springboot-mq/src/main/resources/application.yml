@@ -1,0 +1,40 @@
+server: 
+  port: 8080
+spring:
+  datasource:
+    name: springboot-mq
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://115.29.109.0:13306/demo?characterEncoding=UTF8&allowMultiQueries=true&useSSL=false
+    username: tanxin
+    password: tanxin#a1B2c#
+    hikari:
+      # 最大链接数
+      maximum-pool-size: 50
+      # 客户端等待连接池连接的最大毫秒数
+      connection-timeout: 10000
+      # 最小空闲链接数
+      minimum-idle: 5
+      #允许连接在连接池中空闲的最长时间
+      idle-timeout: 600000
+      # 新建链接是判断
+      connection-init-sql: SELECT 1
+  rabbitmq:
+    host: 115.29.109.0
+    port: 5672
+    username: TanXin
+    password: TanXin@123
+    virtual-host: vhost_one
+    publisher-confirms: true
+    publisher-returns: true
+    listener:
+      simple:
+        acknowledge-mode: manual #手动ack
+mybatis:
+  configLocation: classpath:/mybatis-config.xml
+  type-aliases-package: com.tx.pojo.entity
+  mapper-locations: classpath:mapper/*.xml
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

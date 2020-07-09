@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class CodeUtils {
 
     /**
-     * 乘车随机长度的数字字母字符串
+     * 创建固定长度的数字字母字符串
      *
      * @param length 长度
      * @return 随机字符串

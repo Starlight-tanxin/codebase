@@ -61,21 +61,21 @@ public class CodeGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://39.98.142.99:33221/zyb?useSSL=false&characterEncoding=utf-8&serverTimezone=Asia/Shanghai");
+        dsc.setUrl("jdbc:mysql://47.114.136.74:3306/partyschool?useSSL=false&characterEncoding=utf-8&serverTimezone=Asia/Shanghai");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
-        dsc.setUsername("root");
-        dsc.setPassword("OnlinezuozuoCreated.mysql.zyb");
+        dsc.setUsername("zdtx");
+        dsc.setPassword("123456");
         mpg.setDataSource(dsc);
 
         // 包配置
         PackageConfig pc = new PackageConfig();
         pc.setModuleName(null);
-        pc.setParent("com.zyb.mini.mall");
-        pc.setController("web.controller");
-        pc.setEntity("pojo.entity");
-        pc.setMapper("dao");
-        pc.setXml("mapper");
+        pc.setParent("com.zdtx");
+        pc.setController("web.controller.question");
+        pc.setEntity("question.domain");
+        pc.setMapper("question.mapper");
+        pc.setXml("mapper\\question");
         mpg.setPackageInfo(pc);
 
         // 如果模板引擎是 velocity
@@ -117,7 +117,7 @@ public class CodeGenerator {
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
         // 表前缀
-        strategy.setTablePrefix("tb_");
+        strategy.setTablePrefix("t_");
         mpg.setStrategy(strategy);
         mpg.setTemplateEngine(new VelocityTemplateEngine());
         mpg.execute();

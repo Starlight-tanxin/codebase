@@ -35,6 +35,7 @@ public class InterceptorConfigurer implements WebMvcConfigurer {
                 .excludePathPatterns("/zyb/resource/**")
                 .excludePathPatterns("/zyb/goods/**")
                 .excludePathPatterns("/zyb/common/**")
+                .excludePathPatterns("/zyb/flie//**")
                 .excludePathPatterns("/zyb/order/pay/callback");
 
         log.info("拦截器注册完成");
