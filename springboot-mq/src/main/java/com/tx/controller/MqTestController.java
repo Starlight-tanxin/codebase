@@ -2,6 +2,7 @@ package com.tx.controller;
 
 import com.tx.config.FanoutRabbitConfig;
 import com.tx.mq.manage.RabbitMqManage;
+import com.tx.mq.manage.send.impl.DefaultSendServiceImpl;
 import com.tx.mq.sender.AddUserSend;
 import com.tx.mq.sender.HelloSend;
 import com.tx.mq.topic.send.TopicSend;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,9 +40,12 @@ public class MqTestController {
     @Autowired
     private RabbitMqManage rabbitMqManage;
 
+    @Autowired
+    private DefaultSendServiceImpl defaultSendService;
+
     @GetMapping(value = "sendMq")
     public String sendMq() {
-        helloSend.send();
+        defaultSendService.send("hello", "hello word ; time : " + LocalDateTime.now().toString());
         return "ok";
     }
 

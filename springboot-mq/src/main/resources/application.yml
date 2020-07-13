@@ -1,6 +1,9 @@
 server: 
   port: 8080
 spring:
+  messages:
+    queue:
+      retryTimes: 5
   datasource:
     name: springboot-mq
     driver-class-name: com.mysql.cj.jdbc.Driver
