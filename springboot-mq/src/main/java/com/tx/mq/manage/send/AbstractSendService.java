@@ -29,7 +29,7 @@ public abstract class AbstractSendService implements RabbitTemplate.ConfirmCallb
      * true: 调用returnCallback回调函数
      * false： 不调用returnCallback回调函数 这样在发送消息失败时，会导致消息丢失
      */
-    @Value("${spring.message.mandatory:false}  ")
+    @Value("${spring.message.mandatory:true}  ")
     private Boolean mandatory;
 
 
@@ -89,7 +89,6 @@ public abstract class AbstractSendService implements RabbitTemplate.ConfirmCallb
 
     /**
      * 按照给定的交换机、路由键、发送内容、发送的自定义属性来发送消息
-     * TODO 待完善交互方式
      *
      * @param exchange             交换机名称
      * @param routingKey           路由键
