@@ -47,7 +47,6 @@ public abstract class AbstractSendService implements RabbitTemplate.ConfirmCallb
 
     /**
      * 简单的发送消息
-     * 发送的交换机是默认的 amq.direct交换机，该交换机的类型是DIRECT类型，开启持久化机制
      * 发送的队列即为RoutingKey,需要绑定队列时
      *
      * @param queue   队列，默认是跟路由键是相同的
