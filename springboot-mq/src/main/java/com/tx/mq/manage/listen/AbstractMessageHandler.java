@@ -1,8 +1,8 @@
 package com.tx.mq.manage.listen;
 
 import com.rabbitmq.client.Channel;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.listener.api.ChannelAwareMessageListener;
@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class AbstractMessageHandler implements ChannelAwareMessageListener {
 
 
-    public final Log logger = LogFactory.getLog(this.getClass());
+    public final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Value("${spring.message.queue.retryTimes:5}")
     private Integer retryTimes;
@@ -35,7 +35,7 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
      * @param message     消息
      * @param channel     处理通道
      */
-    public abstract void handleMessage (long deliveryTag, String message, Channel channel) throws IOException;
+    public abstract void handleMessage(long deliveryTag, String message, Channel channel) throws IOException;
 
     private ConcurrentHashMap<String, AcknowledgeMode> ackMap = new ConcurrentHashMap<>(8);
 
@@ -60,7 +60,7 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
             // 自定义业务处理
             this.handleMessage(deliveryTag, msg, channel);
         } catch (Exception e) {
-            if (this.logger.isDebugEnabled()) {
+            if (this.log.isDebugEnabled()) {
                 e.printStackTrace();
             }
         }
@@ -78,7 +78,7 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
      * @param handleResult 业务处理是否成功
      */
     private void onMessageCompleted(String msg, String queue, Channel channel, long deliveryTag, boolean handleResult) {
-        this.logger.info("消息：" + msg + "处理完成，等待事务提交和状态更新");
+        this.log.info("消息：" + msg + "处理完成，等待事务提交和状态更新");
         if (!handleResult) {
             // TODO 业务处理失败，需要更新状态
             return;
@@ -100,13 +100,13 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
                     @Override
                     public Integer doWithRetry(RetryContext context) throws Exception {//开始重试
                         channel.basicAck(deliveryTag, false);
-                        AbstractMessageHandler.this.logger.info("消息" + msg + "已签收");
+                        AbstractMessageHandler.this.log.info("消息" + msg + "已签收");
                         return ++this.count;
                     }
                 }, new RecoveryCallback<Integer>() {
                     @Override
                     public Integer recover(RetryContext context) throws Exception { //重试多次后都失败了
-                        AbstractMessageHandler.this.logger.info("消息" + msg + "签收失败");
+                        AbstractMessageHandler.this.log.info("消息" + msg + "签收失败");
                         return Integer.MAX_VALUE;
                     }
                 });
@@ -116,10 +116,10 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
                     //MQ服务器或网络出现问题，签收失败 更改状态
                 }
             } catch (Exception e) {
-                this.logger.error("消息" + msg + "签收出现异常：" + e.getMessage());
+                this.log.error("消息" + msg + "签收出现异常：" + e.getMessage());
             }
         } else {
-            this.logger.info("消息自动签收");
+            this.log.info("消息自动签收");
         }
 
     }
@@ -132,6 +132,6 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
      */
     public final void setAck(String queue, AcknowledgeMode ack) {
         this.ackMap.put(queue, ack);
-        this.logger.info("注入队列 " + queue + " 消息签收模式: " + ack.name());
+        this.log.info("注入队列 " + queue + " 消息签收模式: " + ack.name());
     }
 }
