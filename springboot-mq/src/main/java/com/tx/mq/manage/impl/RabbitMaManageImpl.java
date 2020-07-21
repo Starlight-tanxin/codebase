@@ -2,6 +2,8 @@ package com.tx.mq.manage.impl;
 
 import com.rabbitmq.client.AMQP;
 import com.tx.mq.manage.ExchangeType;
+import com.tx.mq.manage.RabbitMqDefaultExchange;
+import com.tx.mq.manage.RabbitMqDefaultQueue;
 import com.tx.mq.manage.RabbitMqManage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,14 +29,35 @@ public class RabbitMaManageImpl implements RabbitMqManage {
 
     private final RabbitAdmin rabbitAdmin;
 
+
     public RabbitMaManageImpl(RabbitAdmin rabbitAdmin) {
         this.rabbitAdmin = rabbitAdmin;
+        log.info("初始化RabbitMQ开始------------------------------------------------");
+        boolean isConfirmFail = isQueueExist(RabbitMqDefaultQueue.CONFIRM_FAIL_QUEUE);
+        boolean isMsgSendFail = isQueueExist(RabbitMqDefaultQueue.MSG_SEND_FAIL_QUEUE);
+        boolean isMsgHandleFail = isQueueExist(RabbitMqDefaultQueue.MSG_HANDLE_FAIL_QUEUE);
+        if (!isConfirmFail) {
+            createQueue(RabbitMqDefaultQueue.CONFIRM_FAIL_QUEUE, false);
+        }
+        if (!isMsgSendFail) {
+            createQueue(RabbitMqDefaultQueue.MSG_SEND_FAIL_QUEUE, false);
+        }
+        if (!isMsgHandleFail) {
+            createQueue(RabbitMqDefaultQueue.MSG_HANDLE_FAIL_QUEUE, false);
+        }
+        if (!isExchangeExist(RabbitMqDefaultExchange.FAIL_HANDLE_TOPIC_EXCHANGE)) {
+            createExchange(RabbitMqDefaultExchange.FAIL_HANDLE_TOPIC_EXCHANGE, ExchangeType.TOPIC);
+            bindQueue2Exchange(RabbitMqDefaultQueue.CONFIRM_FAIL_QUEUE, RabbitMqDefaultExchange.FAIL_HANDLE_TOPIC_EXCHANGE, RabbitMqDefaultQueue.CONFIRM_FAIL_QUEUE);
+            bindQueue2Exchange(RabbitMqDefaultQueue.MSG_SEND_FAIL_QUEUE, RabbitMqDefaultExchange.FAIL_HANDLE_TOPIC_EXCHANGE, RabbitMqDefaultQueue.MSG_SEND_FAIL_QUEUE);
+            bindQueue2Exchange(RabbitMqDefaultQueue.MSG_HANDLE_FAIL_QUEUE, RabbitMqDefaultExchange.FAIL_HANDLE_TOPIC_EXCHANGE, RabbitMqDefaultQueue.MSG_HANDLE_FAIL_QUEUE);
+        }
+        log.info("初始化RabbitMQ结束------------------------------------------------");
     }
 
 
     @Override
-    public Queue createQueue(String queueName) {
-        return createQueue(queueName, true, false, true, null);
+    public Queue createQueue(String queueName, boolean authDelete) {
+        return createQueue(queueName, true, false, authDelete, null);
     }
 
 
@@ -64,7 +87,7 @@ public class RabbitMaManageImpl implements RabbitMqManage {
 
     @Override
     public Queue createQueue(String queueName, boolean durable, boolean exclusive, boolean autoDelete, Map<String, Object> arguments) {
-        Queue queue = new Queue(queueName, true, false, true, arguments);
+        Queue queue = new Queue(queueName, durable, exclusive, autoDelete, arguments);
         try {
             String result = rabbitAdmin.declareQueue(queue);
             log.info("创建queue的结果返回 ： {}", result);
@@ -181,8 +204,8 @@ public class RabbitMaManageImpl implements RabbitMqManage {
     }
 
     @Override
-    public boolean isQueueExist(String queueName) {
-        log.info("isQueueExist queue is : " + queueName);
+    public synchronized boolean isQueueExist(String queueName) {
+        log.info("isQueueExist queue is : {}", queueName);
         String isExist = rabbitAdmin.getRabbitTemplate().execute((channel -> {
             try {
                 AMQP.Queue.DeclareOk declareOk = channel.queueDeclarePassive(queueName);
@@ -194,7 +217,26 @@ public class RabbitMaManageImpl implements RabbitMqManage {
                 return null;
             }
         }));
-        log.info("the queue " + queueName + " is exist : " + isExist);
+        log.info("The queue {} is exist : {}", queueName, isExist);
+        return !StringUtils.isEmpty(isExist);
+
+
+    }
+
+    @Override
+    public synchronized boolean isExchangeExist(String exchangeName) {
+        String isExist = rabbitAdmin.getRabbitTemplate().execute((channel -> {
+            try {
+                AMQP.Exchange.DeclareOk declareOk = channel.exchangeDeclarePassive(exchangeName);
+                return declareOk.protocolMethodName();
+            } catch (Exception e) {
+                if (log.isDebugEnabled()) {
+                    throw new RuntimeException("判断Exchange是否存在出现未知错误");
+                }
+                return null;
+            }
+        }));
+        log.info("The  exchange : {}", isExist);
         return !StringUtils.isEmpty(isExist);
     }
 
@@ -202,4 +244,6 @@ public class RabbitMaManageImpl implements RabbitMqManage {
     public int purgeQueue(String queueName) {
         return rabbitAdmin.purgeQueue(queueName);
     }
+
+
 }

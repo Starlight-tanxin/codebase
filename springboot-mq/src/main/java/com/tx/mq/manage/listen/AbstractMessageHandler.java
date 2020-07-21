@@ -82,6 +82,7 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
         this.log.info("消息：" + msg + "处理完成，等待事务提交和状态更新");
         if (!handleResult) {
             // TODO 业务处理失败，需要更新状态
+            // TODO 放入一个队列
             return;
         }
         AcknowledgeMode ack = this.ackMap.get(queue);
@@ -99,38 +100,38 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
                     @Override
                     public Integer doWithRetry(RetryContext context) throws Exception {//开始重试
                         channel.basicAck(deliveryTag, false);
-                        AbstractMessageHandler.this.log.info("消息" + msg + "已签收");
+                        log.info("消息 : {}  已签收 ", msg);
                         return ++this.count;
                     }
                 }, new RecoveryCallback<Integer>() {
                     @Override
                     public Integer recover(RetryContext context) throws Exception { //重试多次后都失败了
-                        AbstractMessageHandler.this.log.info("消息" + msg + "签收失败");
+                        log.info("消息 : {}  已签收 ", msg);
                         return Integer.MAX_VALUE;
                     }
                 });
-                if (result.intValue() <= retryTimes) {
-                    //消息签收成功 更改状态
-                } else {
+                if (result > retryTimes) {
                     //MQ服务器或网络出现问题，签收失败 更改状态
+                    // TODO 放到一个统一队列
                 }
             } catch (Exception e) {
-                this.log.error("消息" + msg + "签收出现异常：" + e.getMessage());
+                log.error("消息 {} \t 签收出现异常", msg);
+                log.error(e.getMessage(), e);
             }
         } else {
-            this.log.info("消息自动签收");
+            log.info("消息自动签收");
         }
 
     }
 
     /**
-     * @param ack
-     * @Title: setAck
-     * @date: 2018年9月14日 上午11:17:41
-     * @Description: 注入消息签收模式
+     * 注入消息签收模式
+     *
+     * @param queue 队列名
+     * @param ack   消息签收模式
      */
     public final void setAck(String queue, AcknowledgeMode ack) {
         this.ackMap.put(queue, ack);
-        this.log.info("注入队列 " + queue + " 消息签收模式: " + ack.name());
+        log.info("注入队列 {} \t 消息签收模式: {} ", queue, ack.name());
     }
 }

@@ -24,4 +24,8 @@ public interface RabbitMqDefaultExchange {
      * 默认的FANOUT类型的交换机
      */
     String DEFAULT_FANOUT_EXCHANGE = "amq.fanout";
+    /**
+     * 失败处理的topic
+     */
+    String FAIL_HANDLE_TOPIC_EXCHANGE = "fail_handle.topic";
 }

@@ -46,18 +46,20 @@ public interface RabbitMqManage {
     String X_DEAD_LETTER_ROUTING_KEY = "x-dead-letter-routing-key";
 
     /**
-     * 创建一个长度不做限制，在消费完所有的消息且没有监听者后就会自动删除的queue
+     * 创建一个长度不做限制的queue。
+     * 可选在消费完所有的消息且没有监听者后就会自动删除的queue
      *
-     * @param queueName queue名字
+     * @param queueName  queue名字
+     * @param authDelete 是否自动删除
      * @return {@link Queue}
      */
-    Queue createQueue(String queueName);
+    Queue createQueue(String queueName, boolean authDelete);
 
     /**
      * 创建一个限制长度，持久化的queue
      *
      * @param queueName    queue名字
-     * @param autoDelete   是否自动山粗
+     * @param autoDelete   是否自动删除
      * @param maxMsgLength 消息长度限制
      * @return {@link Queue}
      */
@@ -170,7 +172,15 @@ public interface RabbitMqManage {
     boolean isQueueExist(String queueName);
 
     /**
-     * 情况队列中的消息
+     * 判断交换机是否存在
+     *
+     * @param exchangeName 交换机名字
+     * @return true-存在  false-失败
+     */
+    boolean isExchangeExist(String exchangeName);
+
+    /**
+     * 情况队列c中的消息
      *
      * @param queueName 队列名
      * @return 清空的消息数量
