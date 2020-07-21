@@ -70,11 +70,12 @@ public interface RabbitMqManage {
      * 即死信队列
      *
      * @param queueName    队列名
+     * @param autoDelete   是否自动删除
      * @param maxMsgLength 消息长度限制
      * @param ttl          消息过期时间 (ms)
      * @return {@link Queue}
      */
-    Queue createQueue(String queueName, int maxMsgLength, int ttl);
+    Queue createQueue(String queueName, boolean autoDelete, int maxMsgLength, int ttl);
 
     /**
      * 创建一个存在消息存活时间到期后会自动发送到其他队列的queue（持久化，不会删除，可用来实现延时队列）

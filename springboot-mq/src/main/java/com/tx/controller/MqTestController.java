@@ -91,7 +91,7 @@ public class MqTestController {
 
     @GetMapping(value = "addQueue")
     public String addQueue(String queue) {
-        rabbitMqManage.createQueue(queue, 10, 30000);
+        rabbitMqManage.createQueue(queue, false, 10, 30000);
         return "ok";
     }
 

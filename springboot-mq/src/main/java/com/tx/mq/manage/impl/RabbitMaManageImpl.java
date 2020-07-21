@@ -69,11 +69,11 @@ public class RabbitMaManageImpl implements RabbitMqManage {
     }
 
     @Override
-    public Queue createQueue(String queueName, int maxMsgLength, int ttl) {
+    public Queue createQueue(String queueName, boolean autoDelete, int maxMsgLength, int ttl) {
         Map<String, Object> arguments = new HashMap<>();
         arguments.put(X_MAX_LENGTH, maxMsgLength);
         arguments.put(X_MESSAGE_TTL, ttl);
-        return createQueue(queueName, true, false, true, arguments);
+        return createQueue(queueName, true, false, autoDelete, arguments);
     }
 
     @Override
