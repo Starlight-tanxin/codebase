@@ -34,8 +34,9 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
      * @param deliveryTag 消息处理标识
      * @param message     消息
      * @param channel     处理通道
+     * @return true-业务处理成功  false-业务处理失败
      */
-    public abstract void handleMessage(long deliveryTag, String message, Channel channel) throws IOException;
+    public abstract boolean handleMessage(long deliveryTag, String message, Channel channel) throws IOException;
 
     private ConcurrentHashMap<String, AcknowledgeMode> ackMap = new ConcurrentHashMap<>(8);
 
@@ -58,7 +59,7 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
         // TODO 进行自己的业务处理 比如记录日志
         try {
             // 自定义业务处理
-            this.handleMessage(deliveryTag, msg, channel);
+            handleResult = this.handleMessage(deliveryTag, msg, channel);
         } catch (Exception e) {
             if (this.log.isDebugEnabled()) {
                 e.printStackTrace();
@@ -72,9 +73,9 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
      * 消息处理结束后进行复处理
      *
      * @param msg          消息实体
-     * @param queue
-     * @param channel
-     * @param deliveryTag
+     * @param queue        队列名
+     * @param channel      消息处理通道
+     * @param deliveryTag  消息标识
      * @param handleResult 业务处理是否成功
      */
     private void onMessageCompleted(String msg, String queue, Channel channel, long deliveryTag, boolean handleResult) {
@@ -85,9 +86,7 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
         }
         AcknowledgeMode ack = this.ackMap.get(queue);
         if (ack.isManual()) {
-            //重试5次
-            int retryTimes = 5;
-            //进行消息
+            //进行消息手动签收处理
             RetryTemplate oRetryTemplate = new RetryTemplate();
             SimpleRetryPolicy oRetryPolicy = new SimpleRetryPolicy();
             oRetryPolicy.setMaxAttempts(retryTimes);

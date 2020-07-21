@@ -22,7 +22,7 @@ public abstract class AbstractSendService implements RabbitTemplate.ConfirmCallb
     public final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public RabbitTemplate rabbitTemplate;
+    protected RabbitTemplate rabbitTemplate;
 
     /**
      * 交换机如果根据自身的类型和路由键匹配上对应的队列时，是否调用returnCallback回调函数

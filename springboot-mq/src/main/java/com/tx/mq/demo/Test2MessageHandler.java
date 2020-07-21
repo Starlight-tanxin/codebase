@@ -7,19 +7,17 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
- * describe: 推荐以每个MQ或者其他的进行操作
+ * describe:
  *
  * @author TanXin
- * @date 2020/7/13 11:14
+ * @date 2020/7/20 14:53
  */
 @Component
-public class TestMessageHandler extends AbstractMessageHandler {
-
+public class Test2MessageHandler extends AbstractMessageHandler {
 
     @Override
     public boolean handleMessage(long deliveryTag, String message, Channel channel) throws IOException {
-        log.info("对消息进行确认 ： {}", message);
-        channel.basicAck(deliveryTag, false);
+        log.info("不对消息进行操作 ： {}", message);
         return true;
     }
 }

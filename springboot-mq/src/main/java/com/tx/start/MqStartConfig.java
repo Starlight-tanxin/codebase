@@ -1,5 +1,6 @@
 package com.tx.start;
 
+import com.tx.mq.demo.Test2MessageHandler;
 import com.tx.mq.demo.TestMessageHandler;
 import com.tx.mq.manage.listen.MessageListen;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,15 @@ public class MqStartConfig implements CommandLineRunner, Ordered {
     private TestMessageHandler testMessageHandler;
 
     @Autowired
+    private Test2MessageHandler test2MessageHandler;
+
+    @Autowired
     private MessageListen messageListen;
 
     @Override
     public void run(String... args) throws Exception {
         messageListen.addMessageLister("hello", testMessageHandler, true);
+        messageListen.addMessageLister("d2d", test2MessageHandler, true);
     }
 
     @Override

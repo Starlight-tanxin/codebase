@@ -46,6 +46,7 @@ public class MqTestController {
     @GetMapping(value = "sendMq")
     public String sendMq() {
         defaultSendService.send("hello", "hello word ; time : " + LocalDateTime.now().toString());
+        defaultSendService.send("d2d", "hello word ; time : " + LocalDateTime.now().toString());
         return "ok";
     }
 
