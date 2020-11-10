@@ -1,0 +1,1 @@
+package com.navinfo.truck.bussiness.mould.model;

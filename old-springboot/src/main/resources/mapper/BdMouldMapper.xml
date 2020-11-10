@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.navinfo.truck.bussiness.mould.dao.rdb.BdMouldMapper">
+  <resultMap id="BaseResultMap" type="com.navinfo.truck.bussiness.mould.domain.BdMould">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="bind_status" jdbcType="INTEGER" property="bindStatus" />
+    <result column="mould_no" jdbcType="VARCHAR" property="mouldNo" />
+    <result column="mould_name" jdbcType="VARCHAR" property="mouldName" />
+    <result column="mould_status" jdbcType="INTEGER" property="mouldStatus" />
+    <result column="mould_price" jdbcType="DECIMAL" property="mouldPrice" />
+    <result column="supplier_no" jdbcType="VARCHAR" property="supplierNo" />
+    <result column="supplier_name" jdbcType="VARCHAR" property="supplierName" />
+    <result column="supplier_contacts" jdbcType="VARCHAR" property="supplierContacts" />
+    <result column="supplier_phone" jdbcType="VARCHAR" property="supplierPhone" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_by" jdbcType="BIGINT" property="createBy" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_by" jdbcType="BIGINT" property="updateBy" />
+    <result column="create_name" jdbcType="VARCHAR" property="createName" />
+    <result column="update_name" jdbcType="VARCHAR" property="updateName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, bind_status, mould_no, mould_name, mould_status, mould_price, supplier_no, supplier_name, 
+    supplier_contacts, supplier_phone, remarks, create_time, create_by, update_time, 
+    update_by, create_name, update_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_bd_mould
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAllByParam" resultMap="BaseResultMap" parameterType="com.navinfo.truck.bussiness.mould.model.req.MouldReq">
+    select
+        id,
+        mould_no,
+        create_time,
+        supplier_name,
+        supplier_no,
+        supplier_phone,
+        supplier_contacts,
+        mould_price,
+        update_time,
+        bind_status,
+        mould_status
+    from
+        tb_bd_mould
+    where
+        1 = 1
+    <if test="mouldNo != null and mouldNo != ''" >
+        and mould_no like concat('',#{mouldNo},'%')
+    </if>
+    <if test="supplierNo != null and supplierNo != ''" >
+        and supplier_no like concat('',#{supplierNo},'%')
+    </if>
+    <if test="supplierName != null and supplierName != ''" >
+        and supplier_name like concat('',#{supplierName},'%')
+    </if>
+    <if test="supplierPhone != null and supplierPhone != ''" >
+        and supplier_phone like concat('',#{supplierPhone},'%')
+    </if>
+    <if test="mouldStatus != null" >
+        and mould_status = #{mouldStatus}
+    </if>
+    <if test="createTimeStart != null" >
+        and create_time &gt;= #{createTimeStart}
+    </if>
+    <if test="createTimeEnd != null" >
+        and create_time &lt;= #{createTimeEnd}
+    </if>
+    <if test="updateTimeStart != null" >
+        and update_time &gt;= #{updateTimeStart}
+    </if>
+    <if test="updateTimeEnd != null" >
+        and update_time &lt;= #{updateTimeEnd}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_bd_mould
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.navinfo.truck.bussiness.mould.domain.BdMould">
+    insert into tb_bd_mould (id, bind_status, mould_no, 
+      mould_name, mould_status, mould_price, 
+      supplier_no, supplier_name, supplier_contacts, 
+      supplier_phone, remarks, create_time, 
+      create_by, update_time, update_by, 
+      create_name, update_name)
+    values (#{id,jdbcType=BIGINT}, #{bindStatus,jdbcType=INTEGER}, #{mouldNo,jdbcType=VARCHAR}, 
+      #{mouldName,jdbcType=VARCHAR}, #{mouldStatus,jdbcType=INTEGER}, #{mouldPrice,jdbcType=DECIMAL}, 
+      #{supplierNo,jdbcType=VARCHAR}, #{supplierName,jdbcType=VARCHAR}, #{supplierContacts,jdbcType=VARCHAR}, 
+      #{supplierPhone,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createBy,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=BIGINT}, 
+      #{createName,jdbcType=VARCHAR}, #{updateName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.navinfo.truck.bussiness.mould.domain.BdMould"  useGeneratedKeys="true" keyProperty="id">
+    insert into tb_bd_mould
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="bindStatus != null">
+        bind_status,
+      </if>
+      <if test="mouldNo != null">
+        mould_no,
+      </if>
+      <if test="mouldName != null">
+        mould_name,
+      </if>
+      <if test="mouldStatus != null">
+        mould_status,
+      </if>
+      <if test="mouldPrice != null">
+        mould_price,
+      </if>
+      <if test="supplierNo != null">
+        supplier_no,
+      </if>
+      <if test="supplierName != null">
+        supplier_name,
+      </if>
+      <if test="supplierContacts != null">
+        supplier_contacts,
+      </if>
+      <if test="supplierPhone != null">
+        supplier_phone,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="createName != null">
+        create_name,
+      </if>
+      <if test="updateName != null">
+        update_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="bindStatus != null">
+        #{bindStatus,jdbcType=INTEGER},
+      </if>
+      <if test="mouldNo != null">
+        #{mouldNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mouldName != null">
+        #{mouldName,jdbcType=VARCHAR},
+      </if>
+      <if test="mouldStatus != null">
+        #{mouldStatus,jdbcType=INTEGER},
+      </if>
+      <if test="mouldPrice != null">
+        #{mouldPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="supplierNo != null">
+        #{supplierNo,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierName != null">
+        #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierContacts != null">
+        #{supplierContacts,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierPhone != null">
+        #{supplierPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=BIGINT},
+      </if>
+      <if test="createName != null">
+        #{createName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateName != null">
+        #{updateName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.navinfo.truck.bussiness.mould.domain.BdMould">
+    update tb_bd_mould
+    <set>
+      <if test="bindStatus != null">
+        bind_status = #{bindStatus,jdbcType=INTEGER},
+      </if>
+      <if test="mouldNo != null">
+        mould_no = #{mouldNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mouldName != null">
+        mould_name = #{mouldName,jdbcType=VARCHAR},
+      </if>
+      <if test="mouldStatus != null">
+        mould_status = #{mouldStatus,jdbcType=INTEGER},
+      </if>
+      <if test="mouldPrice != null">
+        mould_price = #{mouldPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="supplierNo != null">
+        supplier_no = #{supplierNo,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierName != null">
+        supplier_name = #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierContacts != null">
+        supplier_contacts = #{supplierContacts,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierPhone != null">
+        supplier_phone = #{supplierPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=BIGINT},
+      </if>
+      <if test="createName != null">
+        create_name = #{createName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateName != null">
+        update_name = #{updateName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.navinfo.truck.bussiness.mould.domain.BdMould">
+    update tb_bd_mould
+    set bind_status = #{bindStatus,jdbcType=INTEGER},
+      mould_no = #{mouldNo,jdbcType=VARCHAR},
+      mould_name = #{mouldName,jdbcType=VARCHAR},
+      mould_status = #{mouldStatus,jdbcType=INTEGER},
+      mould_price = #{mouldPrice,jdbcType=DECIMAL},
+      supplier_no = #{supplierNo,jdbcType=VARCHAR},
+      supplier_name = #{supplierName,jdbcType=VARCHAR},
+      supplier_contacts = #{supplierContacts,jdbcType=VARCHAR},
+      supplier_phone = #{supplierPhone,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=BIGINT},
+      create_name = #{createName,jdbcType=VARCHAR},
+      update_name = #{updateName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
