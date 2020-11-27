@@ -40,7 +40,7 @@ public class SampleImClient {
             Channel channel = bootstrap.connect(host, port).sync().channel();
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
             while (true) {
-                channel.writeAndFlush(in.readLine() + "\r\n");
+                channel.writeAndFlush(in.readLine() + "\n");
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -21,7 +21,7 @@ public class SimpleImServerHandler extends SimpleChannelInboundHandler<String> {
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
         Channel incoming = ctx.channel();
         // Broadcast a message to multiple Channels
-        CHANNELS.writeAndFlush("[SERVER] - " + incoming.remoteAddress() + " 加入\n");
+        incoming.writeAndFlush("[SERVER] - " + incoming.remoteAddress() + " 加入\n");
         CHANNELS.add(ctx.channel());
     }
 
@@ -30,7 +30,7 @@ public class SimpleImServerHandler extends SimpleChannelInboundHandler<String> {
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         Channel incoming = ctx.channel();
         // Broadcast a message to multiple Channels
-        CHANNELS.writeAndFlush("[SERVER] - " + incoming.remoteAddress() + " 离开\n");
+        incoming.writeAndFlush("[SERVER] - " + incoming.remoteAddress() + " 离开\n");
         CHANNELS.remove(incoming);
         // A closed Channel is automatically removed from ChannelGroup,
         // so there is no need to do "channels.remove(ctx.channel());"
