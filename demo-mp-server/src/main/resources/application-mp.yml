@@ -1,0 +1,10 @@
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml
+  # MyBaits 别名包扫描路径，通过该属性可以给包中的类注册别名，注册后在 Mapper 对应的 XML 文件中可以直接使用类名，而不用使用全限定的类名
+  type-aliases-package: com.xh.server.pojo.entity
+  configuration:
+    # 数据库表与实体类的驼峰命名自动转换
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      table-prefix: tb_

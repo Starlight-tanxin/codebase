@@ -1,0 +1,11 @@
+logging:
+  level:
+    root: INFO
+    com:
+      xh.server: debug
+      ibatis: debug
+    org.springframework:
+      web: DEBUG
+      jdbc: DEBUG
+  file:
+    name: log/xh-server.log

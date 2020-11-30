@@ -1,0 +1,26 @@
+###服务端口号
+server:
+  port: 9091
+spring:
+  application:
+    name: xh-server
+  profiles:
+    include:
+      - mp
+      - log
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://115.29.109.0:13306/demo?useSSL=false&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: tanxin
+    password: tanxin#a1B2c#
+    hikari:
+      # 最大链接数
+      maximum-pool-size: 50
+      # 客户端等待连接池连接的最大毫秒数
+      connection-timeout: 10000
+      # 最小空闲链接数
+      minimum-idle: 5
+      #允许连接在连接池中空闲的最长时间
+      idle-timeout: 600000
+      # 新建链接是判断
+      connection-init-sql: SELECT 1
