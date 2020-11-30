@@ -27,7 +27,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <common-lang3.version>3.8.1</common-lang3.version>
         <hutool.version>5.4.4</hutool.version>
-        <beanutils.version>1.9.3</beanutils.version>
+        <beanutils.version>1.9.4</beanutils.version>
         <commio.version>2.6</commio.version>
         <commcodec.version>1.13</commcodec.version>
     </properties>
