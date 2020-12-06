@@ -6,12 +6,15 @@ import java.security.MessageDigest;
  * @author tanxin
  * @date 2019/6/14
  */
-public class MD5Utils {
+public final class MD5Utils {
 
     private static final String DEFAULT_CHART = "UTF-8";
 
-    private static String byteArrayToHexString(byte b[]) {
-        StringBuffer resultSb = new StringBuffer();
+    private static final String[] HEX_DIGITS = {"0", "1", "2", "3", "4", "5",
+            "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
+
+    private static String byteArrayToHexString(byte[] b) {
+        StringBuilder resultSb = new StringBuilder();
         for (int i = 0; i < b.length; i++)
             resultSb.append(byteToHexString(b[i]));
 
@@ -24,24 +27,24 @@ public class MD5Utils {
             n += 256;
         int d1 = n / 16;
         int d2 = n % 16;
-        return hexDigits[d1] + hexDigits[d2];
+        return HEX_DIGITS[d1] + HEX_DIGITS[d2];
     }
 
     public static String MD5Encode(String origin) {
         return MD5Encode(origin, DEFAULT_CHART);
     }
 
-    public static String MD5Encode(String origin, String charsetname) {
+    public static String MD5Encode(String origin, String charsetName) {
         String resultString = null;
         try {
-            resultString = new String(origin);
+            resultString = origin;
             MessageDigest md = MessageDigest.getInstance("MD5");
-            if (charsetname == null || "".equals(charsetname))
+            if (charsetName == null || "".equals(charsetName))
                 resultString = byteArrayToHexString(md.digest(resultString
                         .getBytes()));
             else
                 resultString = byteArrayToHexString(md.digest(resultString
-                        .getBytes(charsetname)));
+                        .getBytes(charsetName)));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -49,9 +52,9 @@ public class MD5Utils {
     }
 
 
-    public final static String MD5_CAPITAL(String s) {
-        char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                'A', 'B', 'C', 'D', 'E', 'F' };
+    public static String MD5_CAPITAL(String s) {
+        char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                'A', 'B', 'C', 'D', 'E', 'F'};
         try {
             byte[] btInput = s.getBytes();
             // 获得MD5摘要算法的 MessageDigest 对象
@@ -62,10 +65,9 @@ public class MD5Utils {
             byte[] md = mdInst.digest();
             // 把密文转换成十六进制的字符串形式
             int j = md.length;
-            char str[] = new char[j * 2];
+            char[] str = new char[j * 2];
             int k = 0;
-            for (int i = 0; i < j; i++) {
-                byte byte0 = md[i];
+            for (byte byte0 : md) {
                 str[k++] = hexDigits[byte0 >>> 4 & 0xf];
                 str[k++] = hexDigits[byte0 & 0xf];
             }
@@ -76,8 +78,10 @@ public class MD5Utils {
         }
     }
 
-
-    private static final String hexDigits[] = {"0", "1", "2", "3", "4", "5",
-            "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
+    public static void main(String[] args) {
+        String s = "123456";
+        System.out.println(MD5Utils.MD5Encode(s));
+        System.out.println(MD5Utils.MD5_CAPITAL(s));
+    }
 
 }

@@ -50,7 +50,7 @@ public class CodeGenerator {
 
 
         // 全局配置
-        String projectPath = "D://CodeGenerator";
+        String projectPath = "D:/CodeGenerator";
         GlobalConfig gc = new GlobalConfig();
         gc.setOutputDir(projectPath);
         gc.setFileOverride(true);
@@ -76,13 +76,18 @@ public class CodeGenerator {
         // 包配置
         PackageConfig pc = new PackageConfig();
         pc.setModuleName(null);
-        pc.setParent("com.xh.server");
-        pc.setController("web.controller");
-        pc.setEntity("pojo.entity");
-        pc.setMapper("dao");
+//        pc.setParent("com.xh.server");
+//        pc.setController("web.controller");
+//        pc.setEntity("pojo.entity");
+//        pc.setMapper("dao");
         pc.setXml("mapper/");
+//        pc.setService("service");
+//        pc.setServiceImpl("service.impl");
+        pc.setParent("com.wm.r_server.point");
+        pc.setController("controller");
         pc.setService("service");
         pc.setServiceImpl("service.impl");
+        pc.setEntity("entity");
         mpg.setPackageInfo(pc);
 
         // 如果模板引擎是 velocity
@@ -124,7 +129,7 @@ public class CodeGenerator {
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
         //TODO 表前缀  出去系统的表前缀为sys_外，其他表统一使用tb_开头
-        strategy.setTablePrefix("tb_");
+        //strategy.setTablePrefix("tb_");
         mpg.setStrategy(strategy);
         mpg.setTemplateEngine(new VelocityTemplateEngine());
         mpg.execute();
