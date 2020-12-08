@@ -2,10 +2,7 @@ package com.tx.study.netty.sample_im.server;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * <p>description</p>
@@ -21,7 +18,7 @@ public class TestSocketMain {
             InputStream is = socket.getInputStream();
             OutputStream os = socket.getOutputStream();
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-            Executors.newSingleThreadExecutor().execute(()->{
+            Executors.newSingleThreadExecutor().execute(() -> {
                 byte[] buff = new byte[256];
                 int i = 0;
                 while (true) {
@@ -30,14 +27,14 @@ public class TestSocketMain {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    System.out.println(new String(buff, 0, i).replaceAll("\n",""));
+                    System.out.println(new String(buff, 0, i).replaceAll("\n", ""));
                 }
             });
             while (true) {
                 String line = in.readLine();
-                os.write((line+"\n").getBytes());
+                os.write((line + "\n").getBytes());
                 os.flush();
-                if (line.equals("exit")){
+                if (line.equals("exit")) {
                     break;
                 }
             }

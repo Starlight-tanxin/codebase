@@ -3,6 +3,7 @@ package com.dome.mp.server.utils.sign;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.Cipher;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
@@ -17,7 +18,9 @@ import java.security.spec.X509EncodedKeySpec;
  * @author: TanXin
  * @date: 2020/3/27 13:56
  */
-public class RSA {
+public final class RSA {
+    private RSA() {
+    }
 //    private static Map<Integer, String> keyMap = new HashMap<Integer, String>();  //用于封装随机产生的公钥与私钥
 //    public static void main(String[] args) throws Exception {
 //        //生成公钥和私钥
@@ -32,7 +35,6 @@ public class RSA {
 //        System.out.println("还原后的字符串为:" + messageDe);
 //    }
 
-    private static final String CHART = "UTF-8";
     // 算法/模式/填充
     private static final String INSTANCE = "RSA";
     /**
@@ -55,42 +57,37 @@ public class RSA {
 //        keyMap.put(0,publicKeyString);  //0表示公钥
 //        keyMap.put(1,privateKeyString);  //1表示私钥
 //    }
+
     /**
      * RSA公钥加密
      *
-     * @param str
-     *            加密字符串
-     * @param publicKey
-     *            公钥
+     * @param str       加密字符串
+     * @param publicKey 公钥
      * @return 密文
-     * @throws Exception
-     *             加密过程中的异常信息
+     * @throws Exception 加密过程中的异常信息
      */
-    public static String encrypt( String str, String publicKey ) throws Exception{
+    public static String encrypt(String str, String publicKey) throws Exception {
         //base64编码的公钥
         byte[] decoded = Base64.decodeBase64(publicKey);
         RSAPublicKey pubKey = (RSAPublicKey) KeyFactory.getInstance(INSTANCE).generatePublic(new X509EncodedKeySpec(decoded));
         //RSA加密
         Cipher cipher = Cipher.getInstance(INSTANCE);
         cipher.init(Cipher.ENCRYPT_MODE, pubKey);
-        String outStr = Base64.encodeBase64String(cipher.doFinal(str.getBytes(CHART)));
+        String outStr = Base64.encodeBase64String(cipher.doFinal(str.getBytes(StandardCharsets.UTF_8)));
         return outStr;
     }
 
     /**
      * RSA私钥解密
      *
-     * @param str
-     *            加密字符串
-     * @param privateKey
-     *            私钥
+     * @param str        加密字符串
+     * @param privateKey 私钥
      * @return 铭文
-     * @throws Exception
-     *             解密过程中的异常信息
+     * @throws Exception 解密过程中的异常信息
      */
-    public static String decrypt(String str, String privateKey) throws Exception{
+    public static String decrypt(String str, String privateKey) throws Exception {
         //64位解码加密后的字符串
-        byte[] inputByte = Base64.decodeBase64(str.getBytes(CHART));
+        byte[] inputByte = Base64.decodeBase64(str.getBytes(StandardCharsets.UTF_8));
         //base64编码的私钥
         byte[] decoded = Base64.decodeBase64(privateKey);
         RSAPrivateKey priKey = (RSAPrivateKey) KeyFactory.getInstance(INSTANCE).generatePrivate(new PKCS8EncodedKeySpec(decoded));

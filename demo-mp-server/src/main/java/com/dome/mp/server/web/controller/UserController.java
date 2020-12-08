@@ -2,12 +2,14 @@ package com.dome.mp.server.web.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dome.mp.server.core.Result;
+import com.dome.mp.server.pojo.entity.TimeTest;
 import com.dome.mp.server.pojo.entity.User;
 import com.dome.mp.server.service.IUserService;
 import com.dome.mp.server.utils.ResourceUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -57,6 +59,11 @@ public class UserController {
         }
         log.info("InputStream : " + (inputStream == null));
         return Result.success(str);
+    }
+
+    @PostMapping("/time")
+    public Result<TimeTest> time(TimeTest timeTest) {
+        return Result.success(timeTest);
     }
 
 }
