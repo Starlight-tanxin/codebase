@@ -1,7 +1,6 @@
 package com.dome.mp.server.utils;
 
 import java.time.*;
-import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -10,7 +9,10 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author: Tx
  * @date: 2019/11/10
  */
-public class RandomStringUtils {
+public final class RandomStringUtils {
+
+    private RandomStringUtils() {
+    }
 
     /**
      * 创建固定长度的数字字母字符串
