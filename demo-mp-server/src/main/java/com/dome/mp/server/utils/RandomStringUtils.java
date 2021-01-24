@@ -1,6 +1,7 @@
 package com.dome.mp.server.utils;
 
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -90,6 +91,9 @@ public final class RandomStringUtils {
         System.out.println(new Date(instant.getEpochSecond() * 1000));
         System.out.println(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()));
 
+
+        DateTimeFormatter DATE_TIME_ORDER_2 = DateTimeFormatter.ofPattern("yyMMddHHmmss");
+        System.out.println(LocalDateTime.now().format(DATE_TIME_ORDER_2));
     }
 
 }
