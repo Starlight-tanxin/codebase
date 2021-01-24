@@ -6,10 +6,10 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 /**
- * describe:
+ * <p>base64工具类</p>
  *
- * @author: TanXin
- * @date: 2020/4/8 11:46
+ * @author TanXin
+ * @date 2020/4/8 11:46
  */
 public final class Base64Utils {
 
@@ -20,11 +20,11 @@ public final class Base64Utils {
     private static final String BASE64_IMG_MK = ",";
 
     /**
-     * 本地图片转换Base64的方法
+     * <p>本地图片转换Base64的方法</p>
      *
-     * @param imgPath     
+     * @param imgPath 图片所在地址
+     * @return java.lang.String base64编码图片
      */
-
     public static String imageToBase64(String imgPath) {
         byte[] data = null;
         // 读取图片字节数组
@@ -38,36 +38,41 @@ public final class Base64Utils {
     }
 
     /**
-     * Base64编码.
+     * <p>Base64编码.</p>
+     *
+     * @param input: 需要编码的字节数组
+     * @return java.lang.String base64编码后的字符串
      */
     public static String encodeBase64(byte[] input) {
         return new String(Base64.encodeBase64(input));
     }
 
     /**
-     * Base64编码.
+     * <p>Base64编码.</p>
+     *
+     * @param input: 需要编码的字符串
+     * @return java.lang.String base64编码后的字符串
      */
     public static String encodeBase64(String input) {
         return new String(Base64.encodeBase64(input.getBytes(StandardCharsets.UTF_8)));
 
     }
 
-//	/**
-//	 * Base64编码, URL安全(将Base64中的URL非法字符'+'和'/'转为'-'和'_', 见RFC3548).
-//	 */
-//	public static String encodeUrlSafeBase64(byte[] input) {
-//		return Base64.encodeBase64URLSafe(input);
-//	}
-
     /**
-     * Base64解码.
+     * <p>Base64解码.</p>
+     *
+     * @param input: 需要解码的字符串
+     * @return byte[] 解码后的字节数组
      */
     public static byte[] decodeBase64(String input) {
         return Base64.decodeBase64(input.getBytes());
     }
 
     /**
-     * Base64解码.
+     * <p>Base64解码.</p>
+     *
+     * @param input: 需要解码的字符串
+     * @return java.lang.String 解码后的字符串
      */
     public static String decodeBase64String(String input) {
         return new String(Base64.decodeBase64(input.getBytes()), StandardCharsets.UTF_8);
@@ -75,14 +80,12 @@ public final class Base64Utils {
     }
 
     /**
-     * data:image/jpg;base64,
+     * <p>将base64编码字符串转换为图片<p>
+     * <p>data:image/jpg;base64,<p>
      *
      * @param imgStr base64编码字符串
      * @param path   图片路径-具体到文件
-     * @return
-     * @Description: 将base64编码字符串转换为图片
-     * @Author:
-     * @CreateTime:
+     * @return boolean true-成功
      */
     public static boolean generateImage(String imgStr, String path) {
         if (imgStr == null)
@@ -113,6 +116,12 @@ public final class Base64Utils {
         return false;
     }
 
+    /**
+     * <p>创建文件<p>
+     *
+     * @param destFileName: 完整文件名
+     * @return boolean true-成功
+     */
     public static boolean createFile(String destFileName) {
         File file = new File(destFileName);
         if (file.exists()) {

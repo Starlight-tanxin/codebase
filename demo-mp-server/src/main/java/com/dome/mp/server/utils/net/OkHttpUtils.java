@@ -330,12 +330,12 @@ public class OkHttpUtils {
     }
 
     public static void main(String[] args) {
-        File file = new File("/img1/upload/face");
-//        if(!file.exists()){
-        file.mkdirs();
-//        }
+//        File file = new File("/img1/upload/face");
+////        if(!file.exists()){
+//        file.mkdirs();
+////        }
 
-        //  downloadFile("https://pics0.baidu.com/feed/30adcbef76094b365d21ea965d1fbedf8c109d71.jpeg?token=790742ee43b4f8745045b6c7649f8ec0","D://test/d.jpg",null);
+     //     downloadFile("https://pics0.baidu.com/feed/30adcbef76094b365d21ea965d1fbedf8c109d71.jpeg?token=790742ee43b4f8745045b6c7649f8ec0","D://test/d.jpg",null);
         //downloadFile("http://192.168.16.168:8888/group1/M00/00/05/wKgQ5l7W9_eAPYyMAFFmS68VOLA890.mp3", "D://test.mp3", null);
     }
 

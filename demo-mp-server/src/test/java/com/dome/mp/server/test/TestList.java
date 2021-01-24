@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -76,5 +78,8 @@ public class TestList {
         long s3_2 = System.currentTimeMillis();
         System.out.println(s3_2 - s3_1);
 
+        LocalDate date  = LocalDate.now();
+        LocalDateTime time = LocalDateTime.now();
+        System.out.println(time.toLocalDate().equals(date));
     }
 }

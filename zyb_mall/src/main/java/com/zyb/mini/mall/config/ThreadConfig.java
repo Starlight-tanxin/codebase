@@ -12,18 +12,10 @@ import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * Dream what you want to dream;
- * go where you want to go;
- * be what you want to be;
- * because you have only one life and one chance to do all the things you want to do．
- * - - Online zuozuo / Frank / TANJIAN
+ * <p>spring线程池配置<p>
  *
- * @author Created by 谭健 on 2019/10/27 星期日 12:42.
- * @link <a href="http://qm.qq.com/cgi-bin/qm/qr?k=FJVK7slBx7qC5tKm_KdFTbwWOFHq1ASt">Join me</a>
- * @link <a href="http://blog.csdn.net/qq_15071263">CSDN Home Page</a>
- * <p>
- * <p>
- * © All Rights Reserved.
+ * @author TanXin
+ * @date 2020/12/25 23:46
  */
 @Slf4j
 @EnableAsync

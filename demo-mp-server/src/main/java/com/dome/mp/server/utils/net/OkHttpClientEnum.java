@@ -18,12 +18,12 @@ public enum OkHttpClientEnum {
 
     OK_HTTP_CLIENT;
 
-    private OkHttpClient okHttpClient;
+    private final OkHttpClient okHttpClient;
 
-    private int connectTimeout = 5;
-    private int writeTimeout = 30;
-    private int readTimeout = 30;
-    private int callTimeout = 30;
+    private final int connectTimeout = 5;
+    private final int writeTimeout = 30;
+    private final int readTimeout = 30;
+    private final int callTimeout = 30;
 
 
     OkHttpClientEnum() {

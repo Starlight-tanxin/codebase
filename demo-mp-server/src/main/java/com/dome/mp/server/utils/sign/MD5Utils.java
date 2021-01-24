@@ -4,6 +4,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 /**
+ * <p>md5工具类</p>
+ *
  * @author tanxin
  * @date 2019/6/14
  */
@@ -43,10 +45,23 @@ public final class MD5Utils {
 //        return HEX_DIGITS[d1] + HEX_DIGITS[d2];
 //    }
 
+    /**
+     * <p>MD5加密</p>
+     *
+     * @param origin: 原始字符串
+     * @return java.lang.String md5后的字符串
+     */
     public static String MD5Encode(String origin) {
         return MD5Encode(origin, DEFAULT_CHART);
     }
 
+    /**
+     * <p>MD5加密</p>
+     *
+     * @param origin:      原始字符串
+     * @param charsetName: 字符集
+     * @return java.lang.String md5后的字符串
+     */
     public static String MD5Encode(String origin, String charsetName) {
         String resultString = null;
         try {
@@ -64,7 +79,12 @@ public final class MD5Utils {
         return resultString;
     }
 
-
+    /**
+     * <p>MD5加密(大写)</p>
+     *
+     * @param s: 原始字符串
+     * @return java.lang.String md5后的字符串
+     */
     public static String MD5EncodeUpper(String s) {
         try {
             byte[] btInput = s.getBytes(StandardCharsets.UTF_8);

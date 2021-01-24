@@ -260,5 +260,7 @@ public class UUID {
             set.add(orderNo);
         }
         System.out.println("Set 长度 ： " + set.size());
+
+        System.out.println("USER_POINT_MARK:AVG_PULL_USER_682_682&725".length());
     }
 }

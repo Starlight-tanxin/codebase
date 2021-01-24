@@ -35,7 +35,7 @@ public final class AES {
      * @param content: 加密内容
      * @author TanXin
      * @date 2020/12/3 10:49
-     * @return: java.lang.String
+     * @return java.lang.String
      */
     public static String encrypt(String seed, String content) {
         try {
@@ -70,15 +70,14 @@ public final class AES {
      *
      * @param seed:    种子字符串（盐值字符串）
      * @param content: 解密内容
-     * @throws
      * @author TanXin
      * @date 2020/12/3 10:55
-     * @return: java.lang.String
+     * @return java.lang.String
      */
     public static String decrypt(String seed, String content) {
         try {
             //1.构造密钥生成器，指定为AES算法,不区分大小写
-            KeyGenerator keygen = KeyGenerator.getInstance(com.wm.r_server.common.utils.sign.AES.ALGORITHM);
+            KeyGenerator keygen = KeyGenerator.getInstance(AES.ALGORITHM);
             //2.根据种子字符串初始化密钥生成器
             SecureRandom random = SecureRandom.getInstance(RANDOM_ALGORITHM);
             random.setSeed(seed.getBytes(StandardCharsets.UTF_8));
@@ -88,7 +87,7 @@ public final class AES {
             //4.获得原始对称密钥的字节数组
             byte[] raw = originalKey.getEncoded();
             //5.根据字节数组生成AES密钥
-            SecretKey key = new SecretKeySpec(raw, com.wm.r_server.common.utils.sign.AES.ALGORITHM);
+            SecretKey key = new SecretKeySpec(raw, AES.ALGORITHM);
             //6.根据指定算法AES自成密码器
             Cipher cipher = Cipher.getInstance(CIPHER_INSTANCE);
             //7.初始化密码器，第一个参数为加密(Encrypt_mode)或者解密(Decrypt_mode)操作，第二个参数为使用的KEY
