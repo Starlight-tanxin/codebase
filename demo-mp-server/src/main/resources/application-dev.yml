@@ -3,16 +3,16 @@ server:
   port: 9091
 spring:
   application:
-    name: xh-server
+    name: demo-server
   profiles:
     include:
       - mp
       - log
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://115.29.109.0:13306/demo?useSSL=false&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-    username: tanxin
-    password: tanxin#a1B2c#
+    url: jdbc:mysql://127.0.0.1:13306/demo?useSSL=false&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
     hikari:
       # 最大链接数
       maximum-pool-size: 50
