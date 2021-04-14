@@ -19,7 +19,7 @@ public class TestMessageHandler extends AbstractMessageHandler {
     @Override
     public boolean handleMessage(long deliveryTag, String message, Channel channel) throws IOException {
         log.info("对消息进行确认 ： {}", message);
-        channel.basicAck(deliveryTag, false);
-        return true;
+//        channel.basicAck(deliveryTag, true);
+        return false;
     }
 }

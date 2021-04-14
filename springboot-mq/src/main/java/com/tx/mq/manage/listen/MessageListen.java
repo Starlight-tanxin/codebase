@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageListen {
 
-    public final Log logger = LogFactory.getLog(this.getClass());
+    private static final Log log = LogFactory.getLog(MessageListen.class);
 
     @Autowired
     private ConnectionFactory connectionFactory;
@@ -21,12 +21,11 @@ public class MessageListen {
     /**
      * 在容器中加入消息监听
      *
-     * @param queue
-     * @param messageHandler
-     * @param isAck
-     * @throws Exception
+     * @param queue          队列名
+     * @param messageHandler 监听实现对象
+     * @param isAck          是不是手动ack模式
      */
-    public void addMessageLister(String queue, AbstractMessageHandler messageHandler, boolean isAck) throws Exception {
+    public void addMessageLister(String queue, AbstractMessageHandler messageHandler, boolean isAck) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(this.connectionFactory);
         container.setQueueNames(queue);
@@ -39,6 +38,6 @@ public class MessageListen {
         MessageListenerAdapter adapter = new MessageListenerAdapter(messageHandler);
         container.setMessageListener(adapter);
         container.start();
-        this.logger.info("------ 已成功监听异步消息触发通知队列：" + queue + " ------");
+        log.info("------ 已成功监听异步消息触发通知队列：" + queue + " ------");
     }
 }

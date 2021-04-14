@@ -10,7 +10,6 @@ import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -19,24 +18,24 @@ import javax.annotation.PostConstruct;
 
 public abstract class AbstractSendService implements RabbitTemplate.ConfirmCallback, RabbitTemplate.ReturnCallback {
 
-    public final Logger log = LoggerFactory.getLogger(this.getClass());
+    private static final Logger log = LoggerFactory.getLogger(AbstractSendService.class);
 
     @Autowired
     protected RabbitTemplate rabbitTemplate;
 
-    /**
-     * 交换机如果根据自身的类型和路由键匹配上对应的队列时，是否调用returnCallback回调函数
-     * true: 调用returnCallback回调函数
-     * false： 不调用returnCallback回调函数 这样在发送消息失败时，会导致消息丢失
-     */
-    @Value("${spring.message.mandatory:true}  ")
-    private Boolean mandatory;
-
-
-    /**
-     * 默认队列的优先级
-     */
-    public static final int MESSAGE_PRIORITY = 1;
+//    /**
+//     * 交换机如果根据自身的类型和路由键匹配上对应的队列时，是否调用returnCallback回调函数
+//     * true: 调用returnCallback回调函数
+//     * false： 不调用returnCallback回调函数 这样在发送消息失败时，会导致消息丢失
+//     */
+//    @Value("${spring.message.mandatory:true}  ")
+//    private Boolean mandatory;
+//
+//
+//    /**
+//     * 默认队列的优先级
+//     */
+//    public static final int MESSAGE_PRIORITY = 1;
 
     @PostConstruct
     public final void init() {

@@ -25,7 +25,7 @@ import java.util.Map;
 @Component
 public class RabbitMaManageImpl implements RabbitMqManage {
 
-    private static Logger log = LoggerFactory.getLogger(RabbitMaManageImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(RabbitMaManageImpl.class);
 
     private final RabbitAdmin rabbitAdmin;
 

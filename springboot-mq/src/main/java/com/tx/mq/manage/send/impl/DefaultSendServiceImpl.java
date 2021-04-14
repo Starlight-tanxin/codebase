@@ -1,6 +1,8 @@
 package com.tx.mq.manage.send.impl;
 
 import com.tx.mq.manage.send.AbstractSendService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DefaultSendServiceImpl extends AbstractSendService {
+
+    private static final Logger log = LoggerFactory.getLogger(DefaultSendServiceImpl.class);
 
     @Override
     public void handleConfirmCallback(String messageId, boolean ack, String cause) {

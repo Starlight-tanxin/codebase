@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class AbstractMessageHandler implements ChannelAwareMessageListener {
 
 
-    public final Logger log = LoggerFactory.getLogger(this.getClass());
+    private static final Logger log = LoggerFactory.getLogger(AbstractMessageHandler.class);
 
     @Value("${spring.message.queue.retryTimes:5}")
     private Integer retryTimes;
@@ -70,6 +70,20 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
     }
 
     /**
+     * 没有被签收的消息，重回本队列末尾
+     *
+     * @param channel     消息处理通道
+     * @param deliveryTag 消息标识
+     */
+    private void nonAckReturnQueueLast(Channel channel, long deliveryTag) {
+        try {
+            channel.basicNack(deliveryTag, false, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 消息处理结束后进行复处理
      *
      * @param msg          消息实体
@@ -79,10 +93,9 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
      * @param handleResult 业务处理是否成功
      */
     private void onMessageCompleted(String msg, String queue, Channel channel, long deliveryTag, boolean handleResult) {
-        this.log.info("消息：" + msg + "处理完成，等待事务提交和状态更新");
+        this.log.info("消息: {} ,处理完成，等待事务提交和状态更新", msg);
         if (!handleResult) {
-            // TODO 业务处理失败，需要更新状态
-            // TODO 放入一个队列
+            nonAckReturnQueueLast(channel, deliveryTag);
             return;
         }
         AcknowledgeMode ack = this.ackMap.get(queue);
@@ -112,7 +125,8 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
                 });
                 if (result > retryTimes) {
                     //MQ服务器或网络出现问题，签收失败 更改状态
-                    // TODO 放到一个统一队列
+                    // TODO 可以放到一个统一队列 暂时也重回本队列
+                    nonAckReturnQueueLast(channel, deliveryTag);
                 }
             } catch (Exception e) {
                 log.error("消息 {} \t 签收出现异常", msg);

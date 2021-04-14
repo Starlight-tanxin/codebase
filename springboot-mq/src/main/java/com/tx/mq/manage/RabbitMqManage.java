@@ -27,7 +27,7 @@ public interface RabbitMqManage {
     String X_MESSAGE_TTL = "x-message-ttl";
     /**
      * 消息优先级,创建queue时arguments可以使用x-max-priority参数声明优先级队列 。该参数应该是一个整数，表示队列应该支持的最大优先级。
-     * ​​建议使用1到10之间。目前使用更多的优先级将消耗更多的资源（Erlang进程）。
+     * 建议使用1到10之间。目前使用更多的优先级将消耗更多的资源（Erlang进程）。
      * 设置该参数同时设置死信队列时或造成已过期的低优先级消息会在未过期的高优先级消息后面执行。
      * 该参数会造成额外的CPU消耗。
      */
@@ -105,7 +105,7 @@ public interface RabbitMqManage {
      *
      * @param exchangeName 交换机名字
      * @param exchangeType {@link ExchangeType}
-     * @return
+     * @return {@link AbstractExchange} 交换机
      */
     AbstractExchange createExchange(String exchangeName, ExchangeType exchangeType);
 
@@ -181,7 +181,7 @@ public interface RabbitMqManage {
     boolean isExchangeExist(String exchangeName);
 
     /**
-     * 情况队列c中的消息
+     * 清空队列中的消息
      *
      * @param queueName 队列名
      * @return 清空的消息数量

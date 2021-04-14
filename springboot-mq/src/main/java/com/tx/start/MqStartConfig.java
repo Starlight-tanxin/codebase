@@ -27,7 +27,7 @@ public class MqStartConfig implements CommandLineRunner, Ordered {
     private MessageListen messageListen;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         messageListen.addMessageLister("hello", testMessageHandler, true);
         messageListen.addMessageLister("d2d", test2MessageHandler, true);
     }
