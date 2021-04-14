@@ -2,6 +2,8 @@ package com.tx.mq.demo;
 
 import com.rabbitmq.client.Channel;
 import com.tx.mq.manage.listen.AbstractMessageHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -14,6 +16,9 @@ import java.io.IOException;
  */
 @Component
 public class Test2MessageHandler extends AbstractMessageHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(Test2MessageHandler.class);
+
 
     @Override
     public boolean handleMessage(long deliveryTag, String message, Channel channel) throws IOException {

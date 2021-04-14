@@ -27,7 +27,7 @@ public class MessageListen {
      */
     public void addMessageLister(String queue, AbstractMessageHandler messageHandler, boolean isAck) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(this.connectionFactory);
+        container.setConnectionFactory(connectionFactory);
         container.setQueueNames(queue);
         AcknowledgeMode ack = AcknowledgeMode.NONE;
         if (isAck) {

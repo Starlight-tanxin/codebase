@@ -2,9 +2,10 @@ package com.tx.mq.manage.impl;
 
 import com.rabbitmq.client.AMQP;
 import com.tx.mq.manage.ExchangeType;
-import com.tx.mq.manage.RabbitMqDefaultExchange;
-import com.tx.mq.manage.RabbitMqDefaultQueue;
 import com.tx.mq.manage.RabbitMqManage;
+import com.tx.mq.manage.constants.MqExchangeConstants;
+import com.tx.mq.manage.constants.MqQueueConfigConstants;
+import com.tx.mq.manage.constants.MqQueueConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.*;
@@ -33,23 +34,23 @@ public class RabbitMaManageImpl implements RabbitMqManage {
     public RabbitMaManageImpl(RabbitAdmin rabbitAdmin) {
         this.rabbitAdmin = rabbitAdmin;
         log.info("初始化RabbitMQ开始------------------------------------------------");
-        boolean isConfirmFail = isQueueExist(RabbitMqDefaultQueue.CONFIRM_FAIL_QUEUE);
-        boolean isMsgSendFail = isQueueExist(RabbitMqDefaultQueue.MSG_SEND_FAIL_QUEUE);
-        boolean isMsgHandleFail = isQueueExist(RabbitMqDefaultQueue.MSG_HANDLE_FAIL_QUEUE);
+        boolean isConfirmFail = isQueueExist(MqQueueConstants.CONFIRM_FAIL_QUEUE);
+        boolean isMsgSendFail = isQueueExist(MqQueueConstants.MSG_SEND_FAIL_QUEUE);
+        boolean isMsgHandleFail = isQueueExist(MqQueueConstants.MSG_HANDLE_FAIL_QUEUE);
         if (!isConfirmFail) {
-            createQueue(RabbitMqDefaultQueue.CONFIRM_FAIL_QUEUE, false);
+            createQueue(MqQueueConstants.CONFIRM_FAIL_QUEUE, false);
         }
         if (!isMsgSendFail) {
-            createQueue(RabbitMqDefaultQueue.MSG_SEND_FAIL_QUEUE, false);
+            createQueue(MqQueueConstants.MSG_SEND_FAIL_QUEUE, false);
         }
         if (!isMsgHandleFail) {
-            createQueue(RabbitMqDefaultQueue.MSG_HANDLE_FAIL_QUEUE, false);
+            createQueue(MqQueueConstants.MSG_HANDLE_FAIL_QUEUE, false);
         }
-        if (!isExchangeExist(RabbitMqDefaultExchange.FAIL_HANDLE_TOPIC_EXCHANGE)) {
-            createExchange(RabbitMqDefaultExchange.FAIL_HANDLE_TOPIC_EXCHANGE, ExchangeType.TOPIC);
-            bindQueue2Exchange(RabbitMqDefaultQueue.CONFIRM_FAIL_QUEUE, RabbitMqDefaultExchange.FAIL_HANDLE_TOPIC_EXCHANGE, RabbitMqDefaultQueue.CONFIRM_FAIL_QUEUE);
-            bindQueue2Exchange(RabbitMqDefaultQueue.MSG_SEND_FAIL_QUEUE, RabbitMqDefaultExchange.FAIL_HANDLE_TOPIC_EXCHANGE, RabbitMqDefaultQueue.MSG_SEND_FAIL_QUEUE);
-            bindQueue2Exchange(RabbitMqDefaultQueue.MSG_HANDLE_FAIL_QUEUE, RabbitMqDefaultExchange.FAIL_HANDLE_TOPIC_EXCHANGE, RabbitMqDefaultQueue.MSG_HANDLE_FAIL_QUEUE);
+        if (!isExchangeExist(MqExchangeConstants.FAIL_HANDLE_TOPIC_EXCHANGE)) {
+            createExchange(MqExchangeConstants.FAIL_HANDLE_TOPIC_EXCHANGE, ExchangeType.TOPIC);
+            bindQueue2Exchange(MqQueueConstants.CONFIRM_FAIL_QUEUE, MqExchangeConstants.FAIL_HANDLE_TOPIC_EXCHANGE, MqQueueConstants.CONFIRM_FAIL_QUEUE);
+            bindQueue2Exchange(MqQueueConstants.MSG_SEND_FAIL_QUEUE, MqExchangeConstants.FAIL_HANDLE_TOPIC_EXCHANGE, MqQueueConstants.MSG_SEND_FAIL_QUEUE);
+            bindQueue2Exchange(MqQueueConstants.MSG_HANDLE_FAIL_QUEUE, MqExchangeConstants.FAIL_HANDLE_TOPIC_EXCHANGE, MqQueueConstants.MSG_HANDLE_FAIL_QUEUE);
         }
         log.info("初始化RabbitMQ结束------------------------------------------------");
     }
@@ -64,24 +65,24 @@ public class RabbitMaManageImpl implements RabbitMqManage {
     @Override
     public Queue createQueue(String queueName, boolean autoDelete, int maxMsgLength) {
         Map<String, Object> arguments = new HashMap<>();
-        arguments.put(X_MAX_LENGTH, maxMsgLength);
+        arguments.put(MqQueueConfigConstants.X_MAX_LENGTH, maxMsgLength);
         return createQueue(queueName, true, false, autoDelete, arguments);
     }
 
     @Override
     public Queue createQueue(String queueName, boolean autoDelete, int maxMsgLength, int ttl) {
         Map<String, Object> arguments = new HashMap<>();
-        arguments.put(X_MAX_LENGTH, maxMsgLength);
-        arguments.put(X_MESSAGE_TTL, ttl);
+        arguments.put(MqQueueConfigConstants.X_MAX_LENGTH, maxMsgLength);
+        arguments.put(MqQueueConfigConstants.X_MESSAGE_TTL, ttl);
         return createQueue(queueName, true, false, autoDelete, arguments);
     }
 
     @Override
     public Queue createQueue(String queueName, int ttl, String exchange, String routingKey) {
         Map<String, Object> arguments = new HashMap<>();
-        arguments.put(X_MESSAGE_TTL, ttl);
-        arguments.put(X_DEAD_LETTER_EXCHANGE, exchange);
-        arguments.put(X_DEAD_LETTER_ROUTING_KEY, routingKey);
+        arguments.put(MqQueueConfigConstants.X_MESSAGE_TTL, ttl);
+        arguments.put(MqQueueConfigConstants.X_DEAD_LETTER_EXCHANGE, exchange);
+        arguments.put(MqQueueConfigConstants.X_DEAD_LETTER_ROUTING_KEY, routingKey);
         return createQueue(queueName, true, false, false, arguments);
     }
 

@@ -7,7 +7,6 @@ import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.listener.api.ChannelAwareMessageListener;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.retry.RecoveryCallback;
 import org.springframework.retry.RetryCallback;
 import org.springframework.retry.RetryContext;
 import org.springframework.retry.policy.SimpleRetryPolicy;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 @Component
@@ -28,6 +26,8 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
     @Value("${spring.message.queue.retryTimes:5}")
     private Integer retryTimes;
 
+    private volatile AcknowledgeMode acknowledgeMode;
+
     /**
      * 用户自定义消息处理
      *
@@ -38,17 +38,14 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
      */
     public abstract boolean handleMessage(long deliveryTag, String message, Channel channel) throws IOException;
 
-    private ConcurrentHashMap<String, AcknowledgeMode> ackMap = new ConcurrentHashMap<>(8);
-
     /**
      * 消息处理
      *
      * @param message 消息体
      * @param channel channel通道
-     * @throws Exception
      */
     @Override
-    public void onMessage(Message message, Channel channel) throws Exception {
+    public void onMessage(Message message, Channel channel) {
         // 业务处理是否成功
         boolean handleResult = false;
         // 消息处理标识
@@ -59,14 +56,12 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
         // TODO 进行自己的业务处理 比如记录日志
         try {
             // 自定义业务处理
-            handleResult = this.handleMessage(deliveryTag, msg, channel);
+            handleResult = handleMessage(deliveryTag, msg, channel);
         } catch (Exception e) {
-            if (this.log.isDebugEnabled()) {
-                e.printStackTrace();
-            }
+            log.error("AbstractMessageHandler ==> handleMessage() 业务消息处理异常", e);
         }
         // TODO 如果消息处理失败，处理失败的采取措施， 确保消息不丢失
-        this.onMessageCompleted(msg, queue, channel, deliveryTag, handleResult);
+        onMessageCompleted(msg, queue, channel, deliveryTag, handleResult);
     }
 
     /**
@@ -93,13 +88,13 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
      * @param handleResult 业务处理是否成功
      */
     private void onMessageCompleted(String msg, String queue, Channel channel, long deliveryTag, boolean handleResult) {
-        this.log.info("消息: {} ,处理完成，等待事务提交和状态更新", msg);
+        log.info("队列 : {} \t 消息: {} ,处理完成，等待事务提交和状态更新", queue, msg);
         if (!handleResult) {
             nonAckReturnQueueLast(channel, deliveryTag);
             return;
         }
-        AcknowledgeMode ack = this.ackMap.get(queue);
-        if (ack.isManual()) {
+        log.info("队列 : {}, 消息签收模式 : {}", queue, acknowledgeMode);
+        if (acknowledgeMode.isManual()) {
             //进行消息手动签收处理
             RetryTemplate oRetryTemplate = new RetryTemplate();
             SimpleRetryPolicy oRetryPolicy = new SimpleRetryPolicy();
@@ -113,15 +108,12 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
                     @Override
                     public Integer doWithRetry(RetryContext context) throws Exception {//开始重试
                         channel.basicAck(deliveryTag, false);
-                        log.info("消息 : {}  已签收 ", msg);
+                        log.info("队列 : {} \t 消息 : {} \t 已签收 ", queue, msg);
                         return ++this.count;
                     }
-                }, new RecoveryCallback<Integer>() {
-                    @Override
-                    public Integer recover(RetryContext context) throws Exception { //重试多次后都失败了
-                        log.info("消息 : {}  已签收 ", msg);
-                        return Integer.MAX_VALUE;
-                    }
+                }, context -> { //重试多次后都失败了
+                    log.info("消息 : {}  已签收 ", msg);
+                    return Integer.MAX_VALUE;
                 });
                 if (result > retryTimes) {
                     //MQ服务器或网络出现问题，签收失败 更改状态
@@ -145,7 +137,7 @@ public abstract class AbstractMessageHandler implements ChannelAwareMessageListe
      * @param ack   消息签收模式
      */
     public final void setAck(String queue, AcknowledgeMode ack) {
-        this.ackMap.put(queue, ack);
-        log.info("注入队列 {} \t 消息签收模式: {} ", queue, ack.name());
+        acknowledgeMode = ack;
+        log.info("注入队列 {} \t 消息签收模式: {} ", queue, ack);
     }
 }
